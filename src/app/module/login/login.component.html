@@ -1,0 +1,35 @@
+
+<div class="content">
+    <mat-card class="example-card">
+        <mat-card-header>
+          <mat-card-title>Đăng Nhập Tài Khoản</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <form class="example-form">
+                <mat-form-field appearance="fill" class="example-full-width">
+                  <mat-label>User Name</mat-label>
+                  <input type="email" matInput [formControl]="userNameFormControl" placeholder="Ex. nhatttq">
+                  <mat-error *ngIf="userNameFormControl.hasError('required')">
+                    User Name is <strong>required</strong>
+                  </mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label>Enter your password</mat-label>
+                    <input matInput [type]="hide ? 'password' : 'text'" [formControl]="passFormControl">
+                    <mat-error *ngIf="passFormControl.hasError('required')">
+                        Password is <strong>required</strong>
+                      </mat-error>
+                    <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                    <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </button>
+                  </mat-form-field>
+              </form>
+        </mat-card-content>
+        <mat-card-actions class="action">
+          <button mat-raised-button color="primary" (click)="login()">Login</button>
+        </mat-card-actions>
+    </mat-card>
+</div>
+
+
+  
