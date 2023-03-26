@@ -1,0 +1,57 @@
+<h1 mat-dialog-title>dialog title</h1>
+<div mat-dialog-content>
+    <div *ngFor="let item of data">
+        <p>{{item.title}}</p>
+        <mat-form-field class="w-100pt"  *ngIf="item.type === 'number' || item.type === 'text'" appearance="fill">
+            <mat-label>number and text title</mat-label>
+            <input [type]="item.type" matInput [(ngModel)]="item.value">
+        </mat-form-field>
+        <div *ngIf="item.type === 'radio'" appearance="fill">
+            <mat-radio-group [(ngModel)]="item.value">
+                <mat-radio-button 
+                    *ngFor="let radio of item.listRadio" 
+                    class="example-margin" 
+                    [value]="radio.value"
+                >
+                    {{radio.text}}
+                </mat-radio-button>
+              </mat-radio-group>
+        </div>
+    </div>
+    <div>
+        <mat-accordion>
+            <mat-expansion-panel hideToggle>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  This is the expansion title
+                </mat-panel-title>
+                <mat-panel-description>
+                  This is a summary of the content
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <p>This is the primary content of the panel.</p>
+            </mat-expansion-panel>
+            <mat-expansion-panel (opened)="true"
+                                 (closed)="false">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  Self aware panel
+                </mat-panel-title>
+                <mat-panel-description>
+                  Currently I am open
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <p>I'm visible because I am open</p>
+              <button mat-button>click me</button>
+              <button mat-button>click file</button>
+            </mat-expansion-panel>
+          </mat-accordion>
+          
+    </div>
+</div>
+<div class="footer">
+    <div mat-dialog-actions class="btn-ok">
+        <button mat-button (click)="onNoClick()">cancel</button>
+        <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
+    </div>
+</div>

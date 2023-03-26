@@ -1,8 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { environment as env } from 'src/environments/environment';
+import { DialogFilterComponent } from 'src/app/common/dialog-filter/dialog-filter.component';
+import { dialogModel } from 'src/app/model/dialog.model';
+import { selectModel } from 'src/app/model/select.model';
+import { UserService } from './user.service';
 
 @Component({
   selector: 'app-user',
@@ -11,16 +15,34 @@ import { environment as env } from 'src/environments/environment';
 })
 export class UserComponent implements OnInit {
   data: any;
-  constructor(private http: HttpClient){}
+  dataDialog: dialogModel[] = [
+    {
+      type: 'text',
+      title: 'Họ và tên:',
+      value: '',
+    },
+    {
+      type: 'number',
+      title: 'Tuổi:',
+      value: 0,
+    },
+    {
+      type: 'radio',
+      title: 'Gới tính:',
+      value: '0',
+      listRadio: [
+        {text: 'Nam', value: '0'},
+        {text: 'Nữ', value: '1'}
+      ]
+    }
+  ]
+  constructor(
+    private userService: UserService,
+    public dialog: MatDialog,
+  ){}
 
   ngOnInit(): void {
-    this.http.get(env.apiUrl + 'weatherforecast').subscribe(res => {
-      console.log(res)
-      this.data = res
-    }, (err => {
-      console.log(err)
-      this.data = err
-    }))
+    //this.userService.testWeather().subscribe(res => console.log(res))
   }
   displayedColumns: string[] = [
     'position',
@@ -30,11 +52,22 @@ export class UserComponent implements OnInit {
     'actions',
   ];
   dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
-
+  dataSelect = selectData;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+  }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(DialogFilterComponent, {
+      data: this.dataDialog,
+      width: '700px',
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+    });
   }
 }
 
@@ -44,6 +77,20 @@ export interface PeriodicElement {
   weight: number;
   symbol: string;
 }
+
+export interface PeriodicElement {
+  name: string;
+  position: number;
+  weight: number;
+  symbol: string;
+}
+
+const selectData: selectModel[] = [
+  { value: 'A', viewValue: 'Phòng Ban A'},
+  { value: 'B', viewValue: 'Phòng Ban B'},
+  { value: 'C', viewValue: 'Phòng Ban C'},
+  { value: 'D', viewValue: 'Phòng Ban D'}
+]
 
 const ELEMENT_DATA: PeriodicElement[] = [
   { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
