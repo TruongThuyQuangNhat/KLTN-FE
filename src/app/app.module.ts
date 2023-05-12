@@ -14,11 +14,12 @@ import { LoginComponent } from './module/login/login.component';
 import { TokenInterceptor } from './interceptor/jwt/jwt.interceptor';
 import { TableComponent } from './common/table/table.component';
 import { DialogFilterComponent } from './common/dialog-filter/dialog-filter.component';
+import { DialogAddComponent } from './common/dialog-add/dialog-add.component';
 
 @NgModule({
   declarations: [
     ToolbarBasicExample, 
-    UserComponent, PageNotFoundComponent, LoginComponent, TableComponent, DialogFilterComponent
+    UserComponent, PageNotFoundComponent, LoginComponent, TableComponent, DialogFilterComponent, DialogAddComponent
   ],
   imports: [
     BrowserAnimationsModule,
