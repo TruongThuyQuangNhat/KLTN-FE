@@ -1,5 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { map } from 'rxjs';
+import { GridModel } from 'src/app/common/model/gridModel';
 import { environment as env } from 'src/environments/environment';
 
 @Injectable({
@@ -7,7 +9,8 @@ import { environment as env } from 'src/environments/environment';
 })
 export class UserService {
   constructor(private http: HttpClient){}
-  testWeather(){
-    return this.http.get<any>(env.apiUrl + 'weatherforecast').pipe()
+
+  getUsers(gridModel: GridModel){
+    return this.http.post(env.apiUrl + 'user/getlist', gridModel).pipe(map((res: any) => res));
   }
 }

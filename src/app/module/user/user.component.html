@@ -29,5 +29,11 @@
     </button>
   </mat-toolbar>
   
-    <app-table></app-table>
+    <app-table 
+      [data]="data" 
+      [dataTable]="dataTable" 
+      [displayedColumns]="displayedColumns"
+      [pageEvent]="pageEvent"
+      (paginator)="handlePaginator($event)"
+    ></app-table>
 </div>
