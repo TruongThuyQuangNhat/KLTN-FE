@@ -59,6 +59,11 @@ export class UserComponent implements OnInit {
       value: 0,
     },
     {
+      type: 'upload',
+      title: 'Avatar:',
+      value: '',
+    },
+    {
       type: 'radio',
       title: 'Gới tính:',
       value: '0',
@@ -142,7 +147,11 @@ export class UserComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+      if(result){
+        this.userService.uploadImage(result).subscribe(res => {
+          console.log(res)
+        })
+      }
     });
   }
 }

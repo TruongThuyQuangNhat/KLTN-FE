@@ -13,4 +13,8 @@ export class UserService {
   getUsers(gridModel: GridModel){
     return this.http.post(env.apiUrl + 'user/getlist', gridModel).pipe(map((res: any) => res));
   }
+
+  uploadImage(image: any){
+    return this.http.post(env.apiUrl + 'authenticate/upload', image).pipe(map((res: any) => res));
+  }
 }

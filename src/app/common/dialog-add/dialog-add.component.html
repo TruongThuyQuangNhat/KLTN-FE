@@ -39,7 +39,6 @@
                 </mat-datetimepicker>
                 <input
                   matInput
-                  formControlName="start"
                   [matDatetimepicker]="datetimePicker"
                   autocomplete="false"
                   [value]="item.value"
@@ -55,39 +54,32 @@
                 <mat-datepicker #picker></mat-datepicker>
               </mat-form-field>
         </div>
-    </div>
-    <div>
-        <mat-accordion>
-            <mat-expansion-panel hideToggle>
-              <mat-expansion-panel-header>
-                <mat-panel-title>
-                  This is the expansion title
-                </mat-panel-title>
-                <mat-panel-description>
-                  This is a summary of the content
-                </mat-panel-description>
-              </mat-expansion-panel-header>
-              <p>This is the primary content of the panel.</p>
-            </mat-expansion-panel>
-            <mat-expansion-panel (opened)="true"
-                                 (closed)="false">
-              <mat-expansion-panel-header>
-                <mat-panel-title>
-                  Self aware panel
-                </mat-panel-title>
-                <mat-panel-description>
-                  Currently I am open
-                </mat-panel-description>
-              </mat-expansion-panel-header>
-              <p>I'm visible because I am open</p>
-              <button mat-button>click me</button>
-              <button mat-button>click file</button>
-            </mat-expansion-panel>
-          </mat-accordion>
-          
+        <form *ngIf="item.type === 'upload'" [formGroup]="myForm">
+            <div class="image-container">
+                <button color="primary" type="button" (click)="fileInput.click()" mat-fab>
+                  <mat-icon>image</mat-icon>
+                </button>
+                <input
+                  formControlName="fileControl"
+                  hidden
+                  accept="image/png, image/jpeg"
+                  (change)="onFileSelected($event)"
+                  #fileInput
+                  type="file"
+                  id="file"
+                  class="image-input"
+                />
+                <img
+                  *ngIf="imageProduct"
+                  class="preview"
+                  [src]="imageProduct"
+                  style="height: 75px"
+                />
+            </div>
+        </form>
     </div>
 </div>
 <div mat-dialog-actions class="footer">
-  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
+  <button mat-button (click)="submit()" [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
   <button mat-button (click)="onNoClick()">cancel</button>
 </div>
