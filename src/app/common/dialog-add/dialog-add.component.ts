@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DialogFilterComponent } from '../dialog-filter/dialog-filter.component';
 import { dialogModel } from 'src/app/model/dialog.model';
@@ -9,29 +9,41 @@ import { FormControl, FormGroup } from '@angular/forms';
   templateUrl: './dialog-add.component.html',
   styleUrls: ['./dialog-add.component.scss']
 })
-export class DialogAddComponent {
+export class DialogAddComponent implements OnInit {
   reader!: FileReader;
   imageProduct: string;
-  myForm = new FormGroup({
-    fileSource: new FormControl(),
-    fileControl: new FormControl(),
-  });
+  myForm: FormGroup;
   constructor(
     public dialogRef: MatDialogRef<DialogFilterComponent>,
     @Inject(MAT_DIALOG_DATA) public data: dialogModel[],
   ) {}
+  
+  ngOnInit(): void {
+    let data: any = {};
+    this.data.forEach(i => {
+      data[i.field] = new FormControl();
+    })
+    data.fileSource = new FormControl();
+    this.myForm = new FormGroup(data)
+  }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 
   submit(){
-    const formData = new FormData();
-    const fileSource = this.myForm.get("fileSource");
-    if (fileSource?.value != null){
-      formData.append("avatar", fileSource.value);
-      this.dialogRef.close(formData);
-    }
+    const res: any = {};
+    this.data.forEach(i => {
+      let fileSource: any;
+      if(i.field === 'Avatar'){
+        fileSource = this.myForm.get("fileSource");
+        console.log(fileSource)
+      } else {
+        fileSource = this.myForm.get(i.field);
+      }
+      res[i.field] = fileSource?.value;
+    })
+    this.dialogRef.close(res);
   }
 
   onFileSelected(event: Event) {

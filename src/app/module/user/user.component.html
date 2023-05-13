@@ -1,4 +1,11 @@
-<div class="content">
+<div *ngIf="loading">
+  <mat-progress-bar
+    color="primary"
+    mode="indeterminate">
+  </mat-progress-bar>
+</div>
+
+<div [class]="loading?'content2':'content'">
   <mat-toolbar>
     <button (click)="openDialog()" mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
       <mat-icon>tune</mat-icon>

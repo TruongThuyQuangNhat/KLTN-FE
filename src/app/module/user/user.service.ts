@@ -17,4 +17,20 @@ export class UserService {
   uploadImage(image: any){
     return this.http.post(env.apiUrl + 'authenticate/upload', image).pipe(map((res: any) => res));
   }
+
+  createUser(data: CreateUserModel){
+    return this.http.post(env.apiUrl + 'authenticate/register', data).pipe(map((res: any) => res));
+  }
+}
+
+class CreateUserModel {
+  Username: string;
+  Email: string;
+  Password: string;
+  RepeatPassword: string;
+  FirstName: string;
+  LastName: string;
+  DepartmentId: string;
+  PositionId: string;
+  Avatar: string;
 }

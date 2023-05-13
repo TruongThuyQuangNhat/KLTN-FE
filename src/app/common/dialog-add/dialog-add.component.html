@@ -1,66 +1,67 @@
 <h1 mat-dialog-title>dialog title</h1>
 <div mat-dialog-content>
-    <div *ngFor="let item of data">
-        <p>{{item.title}}</p>
-        <mat-form-field class="w-100pt"  *ngIf="item.type === 'number' || item.type === 'text'" appearance="fill">
-            <mat-label>number and text title</mat-label>
-            <input [type]="item.type" matInput [(ngModel)]="item.value">
-        </mat-form-field>
-        <mat-form-field class="w-100pt"  *ngIf="item.type === 'select'" appearance="fill">
-            <mat-label>select item</mat-label>
-            <mat-select>
-                <mat-option *ngFor="let i of item.listSelect" [value]="item.value">
-                  {{i.text}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-        <div *ngIf="item.type === 'radio'">
-            <mat-radio-group [(ngModel)]="item.value">
-                <mat-radio-button 
-                    *ngFor="let radio of item.listRadio" 
-                    class="example-margin" 
-                    [value]="radio.value"
-                >
-                    {{radio.text}}
-                </mat-radio-button>
-              </mat-radio-group>
-        </div>
-        <div *ngIf="item.type === 'dateTime'">
-            <mat-form-field class="w-100pt">
-                <mat-label>Start DateTime</mat-label>
-                <mat-datetimepicker-toggle
-                  [for]="datetimePicker"
-                  matSuffix
-                ></mat-datetimepicker-toggle>
-                <mat-datetimepicker
-                  #datetimePicker
-                  type="datetime"
-                >
-                </mat-datetimepicker>
-                <input
-                  matInput
-                  [matDatetimepicker]="datetimePicker"
-                  autocomplete="false"
-                  [value]="item.value"
-                />
-              </mat-form-field>
-        </div>
-        <div  *ngIf="item.type === 'date'">
-            <mat-form-field appearance="fill" class="w-100pt">
-                <mat-label>Choose a date</mat-label>
-                <input matInput [value]="item.value" [matDatepicker]="picker">
-                <mat-hint>MM/DD/YYYY</mat-hint>
-                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-              </mat-form-field>
-        </div>
-        <form *ngIf="item.type === 'upload'" [formGroup]="myForm">
-            <div class="image-container">
+    <form [formGroup]="myForm">
+        <div *ngFor="let item of data">
+            <p>{{item.title}}</p>
+            <mat-form-field class="w-100pt"  *ngIf="item.type === 'number' || item.type === 'text' || item.type === 'password'" appearance="fill">
+                <mat-label>number and text title</mat-label>
+                <input [type]="item.type" matInput [formControlName]="item.field">
+            </mat-form-field>
+            <mat-form-field class="w-100pt"  *ngIf="item.type === 'select'" appearance="fill">
+                <mat-label>select item</mat-label>
+                <mat-select [value]="item.value" [formControlName]="item.field">
+                    <mat-option *ngFor="let i of item.listSelect" [value]="i.value">
+                      {{i.text}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div *ngIf="item.type === 'radio'">
+                <mat-radio-group [formControlName]="item.field">
+                    <mat-radio-button 
+                        *ngFor="let radio of item.listRadio" 
+                        class="example-margin" 
+                        [value]="radio.value"
+                    >
+                        {{radio.text}}
+                    </mat-radio-button>
+                  </mat-radio-group>
+            </div>
+            <div *ngIf="item.type === 'dateTime'">
+                <mat-form-field class="w-100pt">
+                    <mat-label>Start DateTime</mat-label>
+                    <mat-datetimepicker-toggle
+                      [for]="datetimePicker"
+                      matSuffix
+                    ></mat-datetimepicker-toggle>
+                    <mat-datetimepicker
+                      #datetimePicker
+                      type="datetime"
+                    >
+                    </mat-datetimepicker>
+                    <input
+                      matInput
+                      [formControlName]="item.field"
+                      [matDatetimepicker]="datetimePicker"
+                      autocomplete="false"
+                      [value]="item.value"
+                    />
+                  </mat-form-field>
+            </div>
+            <div  *ngIf="item.type === 'date'">
+                <mat-form-field appearance="fill" class="w-100pt">
+                    <mat-label>Choose a date</mat-label>
+                    <input matInput [value]="item.value" [formControlName]="item.field" [matDatepicker]="picker">
+                    <mat-hint>MM/DD/YYYY</mat-hint>
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                  </mat-form-field>
+            </div>
+            <div *ngIf="item.type === 'upload'" class="image-container">
                 <button color="primary" type="button" (click)="fileInput.click()" mat-fab>
                   <mat-icon>image</mat-icon>
                 </button>
                 <input
-                  formControlName="fileControl"
+                [formControlName]="item.field"
                   hidden
                   accept="image/png, image/jpeg"
                   (change)="onFileSelected($event)"
@@ -76,8 +77,8 @@
                   style="height: 75px"
                 />
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
 </div>
 <div mat-dialog-actions class="footer">
   <button mat-button (click)="submit()" [mat-dialog-close]="data" cdkFocusInitial>Ok</button>

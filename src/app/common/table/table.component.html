@@ -7,7 +7,18 @@
             <td mat-cell *matCellDef="let element">{{element.lastName + ' ' + element.firstName}}</td>
           </ng-container>
         </div>
-        <div *ngIf="item.field !== 'fullName'">
+        <div *ngIf="item.field == 'avatar'">
+          <ng-container [matColumnDef]="item.field">
+            <th mat-header-cell *matHeaderCellDef>{{item.text}}</th>
+            <td mat-cell *matCellDef="let element">
+              <img [src]="element[item.field]?'https://localhost:5001/'+element[item.field]:
+                'https://th.bing.com/th/id/R.136cc50d89f917ee8b820b39bbaa98d4?rik=LHOLLs3DfCbR9Q&pid=ImgRaw&r=0'" 
+                class="avatar"
+              />
+            </td>
+          </ng-container>
+        </div>
+        <div *ngIf="item.field !== 'fullName' && item.field !== 'avatar'">
           <ng-container [matColumnDef]="item.field">
             <th mat-header-cell *matHeaderCellDef>{{item.text}}</th>
             <td mat-cell *matCellDef="let element">{{element[item.field]}}</td>

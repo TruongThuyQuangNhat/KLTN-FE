@@ -10,6 +10,8 @@ import { UserService } from './user.service';
 import { GridModel } from 'src/app/common/model/gridModel';
 import { ResUsers } from 'src/app/common/model/listUserModel';
 import { DialogAddComponent } from 'src/app/common/dialog-add/dialog-add.component';
+import { LoadingService } from 'src/app/interceptor/loading/loading.service';
+import { delay } from 'rxjs';
 
 @Component({
   selector: 'app-user',
@@ -17,6 +19,7 @@ import { DialogAddComponent } from 'src/app/common/dialog-add/dialog-add.compone
   styleUrls: ['./user.component.scss']
 })
 export class UserComponent implements OnInit {
+  loading: boolean = false;
   data: ResUsers[] = [];
   displayedColumns: string[] = ['fullName', 'email', 'avatar', 'departmentName', 'positionName', 'roles'];
   dataTable: any[] = [
@@ -47,7 +50,7 @@ export class UserComponent implements OnInit {
   ];
   pageEvent: PageEvent = new PageEvent()
   gridModel: GridModel = new GridModel();
-  dataDialog: dialogModel[] = [
+  dataDialogTemp: any[] = [
     {
       type: 'text',
       title: 'Họ và tên:',
@@ -94,12 +97,83 @@ export class UserComponent implements OnInit {
       title: 'Chọn ngày và giờ:',
       value: new Date(),
     },
-  ]
+  ];
+
+  dataDialog: dialogModel[] = [
+    {
+      type: 'text',
+      title: 'User Name:',
+      field: 'Username',
+      value: '',
+    },
+    {
+      type: 'text',
+      title: 'Tên:',
+      field: 'FirstName',
+      value: '',
+    },
+    {
+      type: 'text',
+      title: 'Họ:',
+      field: 'LastName',
+      value: '',
+    },
+    {
+      type: 'text',
+      title: 'Email:',
+      field: 'Email',
+      value: '',
+    },
+    {
+      type: 'upload',
+      title: 'Avatar:',
+      field: 'Avatar',
+      value: '',
+    },
+    {
+      type: 'password',
+      title: 'Mật Khẩu:',
+      field: 'Password',
+      value: '',
+    },
+    {
+      type: 'password',
+      title: 'Lặp Lại Mật Khẩu:',
+      field: 'RepeatPassword',
+      value: '',
+    },
+    {
+      type: 'select',
+      title: 'Chọn Phòng Ban:',
+      value: '0',
+      field: 'DepartmentId',
+      listSelect: [
+        {text: 'none', value: ''},
+        {text: 'Phòng Nhân Sự', value: '05992bf5-2a88-4653-a19e-55cd4545ee46'},
+        {text: 'Phòng IT', value: '05992bf5-2a88-4653-a19e-55cd4545ee46'},
+        {text: 'Phòng Khách Hàng', value: '05992bf5-2a88-4653-a19e-55cd4545ee46'},
+        {text: 'Phòng R&D', value: '05992bf5-2a88-4653-a19e-55cd4545ee46'},
+      ]
+    },
+    {
+      type: 'select',
+      title: 'Chọn Chức Vụ:',
+      value: '',
+      field: 'PositionId',
+      listSelect: [
+        {text: 'none', value: ''},
+        {text: 'Giams đoc', value: '8bcb340d-50a5-4a21-a8d1-0d8df6dab262'},
+        {text: 'Bao ve', value: '8bcb340d-50a5-4a21-a8d1-0d8df6dab262'},
+        {text: 'Nhan vien', value: '8bcb340d-50a5-4a21-a8d1-0d8df6dab262'},
+      ]
+    },
+  ];
   dataSelect = selectData;
 
   constructor(
     private userService: UserService,
     public dialog: MatDialog,
+    private _loading: LoadingService
   ){}
 
   ngOnInit(): void {
@@ -108,7 +182,8 @@ export class UserComponent implements OnInit {
     this.gridModel.pageSize = 3;
     this.pageEvent.pageIndex = this.gridModel.page;
     this.pageEvent.pageSize = this.gridModel.pageSize
-    this.getData()
+    this.getData();
+    this.listenToLoading();
   }
 
   getData(){
@@ -147,12 +222,28 @@ export class UserComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result){
-        this.userService.uploadImage(result).subscribe(res => {
-          console.log(res)
+      console.log(result)
+      if(result?.Avatar){
+        const formImage = new FormData();
+        formImage.append('Avatar', result?.Avatar);
+        this.userService.uploadImage(formImage).subscribe(res => {
+          if(res && res.url){
+            result.Avatar = res.url;
+            this.userService.createUser(result).subscribe(res => {
+              console.log(res);
+            })
+          }
         })
       }
     });
+  }
+
+  listenToLoading(): void {
+    this._loading.loadingSub
+      .pipe(delay(0)) // This prevents a ExpressionChangedAfterItHasBeenCheckedError for subsequent requests
+      .subscribe((loading) => {
+        this.loading = loading;
+      });
   }
 }
 

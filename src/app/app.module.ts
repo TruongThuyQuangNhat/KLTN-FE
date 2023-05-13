@@ -15,6 +15,7 @@ import { TokenInterceptor } from './interceptor/jwt/jwt.interceptor';
 import { TableComponent } from './common/table/table.component';
 import { DialogFilterComponent } from './common/dialog-filter/dialog-filter.component';
 import { DialogAddComponent } from './common/dialog-add/dialog-add.component';
+import { HttpRequestInterceptor } from './interceptor/loading/http-request-interceptor';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { DialogAddComponent } from './common/dialog-add/dialog-add.component';
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: HttpRequestInterceptor, multi: true },
   ],
   bootstrap: [ToolbarBasicExample],
 })
