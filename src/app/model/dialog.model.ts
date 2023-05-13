@@ -3,6 +3,7 @@ export interface dialogModel {
     value: any;
     title: string;
     listRadio?: radio[],
+    listSelect?: radio[],
 }
 
 export interface radio {

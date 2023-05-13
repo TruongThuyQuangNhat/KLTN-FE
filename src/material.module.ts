@@ -47,6 +47,8 @@ import {OverlayModule} from '@angular/cdk/overlay';
 import {CdkMenuModule} from '@angular/cdk/menu';
 import {DialogModule} from '@angular/cdk/dialog';
 import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatDatetimepickerModule } from '@mat-datetimepicker/core';
+import { MatMomentDatetimeModule } from '@mat-datetimepicker/moment';
 
 @NgModule({
   exports: [
@@ -99,6 +101,8 @@ import { MatFormFieldModule } from "@angular/material/form-field";
     ScrollingModule,
     DialogModule,
     MatFormFieldModule,
+    MatDatetimepickerModule,
+    MatMomentDatetimeModule
   ]
 })
 export class MaterialExampleModule {}

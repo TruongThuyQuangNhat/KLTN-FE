@@ -9,6 +9,7 @@ import { selectModel } from 'src/app/model/select.model';
 import { UserService } from './user.service';
 import { GridModel } from 'src/app/common/model/gridModel';
 import { ResUsers } from 'src/app/common/model/listUserModel';
+import { DialogAddComponent } from 'src/app/common/dialog-add/dialog-add.component';
 
 @Component({
   selector: 'app-user',
@@ -65,7 +66,29 @@ export class UserComponent implements OnInit {
         {text: 'Nam', value: '0'},
         {text: 'Nữ', value: '1'}
       ]
-    }
+    },
+    {
+      type: 'select',
+      title: 'Chọn Phòng Ban:',
+      value: '0',
+      listSelect: [
+        {text: 'none', value: '0'},
+        {text: 'Phòng Nhân Sự', value: '11'},
+        {text: 'Phòng IT', value: '12'},
+        {text: 'Phòng Khách Hàng', value: '13'},
+        {text: 'Phòng R&D', value: '14'},
+      ]
+    },
+    {
+      type: 'date',
+      title: 'Ngày sinh:',
+      value: new Date(),
+    },
+    {
+      type: 'dateTime',
+      title: 'Chọn ngày và giờ:',
+      value: new Date(),
+    },
   ]
   dataSelect = selectData;
 
@@ -103,6 +126,17 @@ export class UserComponent implements OnInit {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogFilterComponent, {
+      data: this.dataDialog,
+      width: '700px',
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+    });
+  }
+
+  openAdd(){
+    const dialogRef = this.dialog.open(DialogAddComponent, {
       data: this.dataDialog,
       width: '700px',
     });
