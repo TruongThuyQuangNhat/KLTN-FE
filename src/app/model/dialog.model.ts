@@ -4,6 +4,7 @@ export interface dialogModel {
     title: string;
     field: string;
     required: boolean;
+    subTitle?: string;
     listRadio?: radio[],
     listSelect?: radio[],
 }

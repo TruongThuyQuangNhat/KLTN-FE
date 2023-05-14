@@ -4,7 +4,7 @@
         <div *ngFor="let item of data">
             <p>{{item.title}}</p>
             <mat-form-field class="w-100pt"  *ngIf="item.type === 'number' || item.type === 'text' || item.type === 'password'" appearance="fill">
-                <mat-label>number and text title</mat-label>
+                <mat-label>{{item.subTitle}}</mat-label>
                 <input [type]="item.type" matInput [formControlName]="item.field">
             </mat-form-field>
             <mat-form-field class="w-100pt"  *ngIf="item.type === 'select'" appearance="fill">

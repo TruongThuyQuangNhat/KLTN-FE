@@ -51,4 +51,14 @@ export class TableComponent implements OnInit, OnChanges {
       pageSize: value.pageSize,
     });
   }
+
+  viewDetail(id: string){
+    console.log(id)
+  }
+  editItem(id: string){
+    console.log(id)
+  }
+  deleteItem(id: string){
+    console.log(id)
+  }
 }
