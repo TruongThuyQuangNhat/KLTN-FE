@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DialogFilterComponent } from '../dialog-filter/dialog-filter.component';
 import { dialogModel } from 'src/app/model/dialog.model';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-dialog-add',
@@ -21,7 +21,11 @@ export class DialogAddComponent implements OnInit {
   ngOnInit(): void {
     let data: any = {};
     this.data.forEach(i => {
-      data[i.field] = new FormControl();
+      if(i.required){
+        data[i.field] = new FormControl("", Validators.required);
+      } else {
+        data[i.field] = new FormControl();
+      }
     })
     data.fileSource = new FormControl();
     this.myForm = new FormGroup(data)
@@ -33,17 +37,24 @@ export class DialogAddComponent implements OnInit {
 
   submit(){
     const res: any = {};
+    let check: boolean = true;
     this.data.forEach(i => {
       let fileSource: any;
       if(i.field === 'Avatar'){
         fileSource = this.myForm.get("fileSource");
-        console.log(fileSource)
       } else {
         fileSource = this.myForm.get(i.field);
       }
       res[i.field] = fileSource?.value;
+      if(i.required){
+        if(!fileSource?.value){
+          check = false
+        }
+      }
     })
-    this.dialogRef.close(res);
+    if(check){
+      this.dialogRef.close(res);
+    }
   }
 
   onFileSelected(event: Event) {

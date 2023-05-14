@@ -10,8 +10,8 @@
             <mat-form-field class="w-100pt"  *ngIf="item.type === 'select'" appearance="fill">
                 <mat-label>select item</mat-label>
                 <mat-select [value]="item.value" [formControlName]="item.field">
-                    <mat-option *ngFor="let i of item.listSelect" [value]="i.value">
-                      {{i.text}}
+                    <mat-option *ngFor="let i of item.listSelect" [value]="i.id">
+                      {{i.name}}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
@@ -20,9 +20,9 @@
                     <mat-radio-button 
                         *ngFor="let radio of item.listRadio" 
                         class="example-margin" 
-                        [value]="radio.value"
+                        [value]="radio.id"
                     >
-                        {{radio.text}}
+                        {{radio.name}}
                     </mat-radio-button>
                   </mat-radio-group>
             </div>
@@ -78,9 +78,10 @@
                 />
             </div>
         </div>
+        
+        <div mat-dialog-actions class="footer">
+          <button mat-button type="submit" (click)="submit()" cdkFocusInitial>Ok</button>
+          <button mat-button (click)="onNoClick()">cancel</button>
+        </div>
     </form>
-</div>
-<div mat-dialog-actions class="footer">
-  <button mat-button (click)="submit()" [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
-  <button mat-button (click)="onNoClick()">cancel</button>
 </div>

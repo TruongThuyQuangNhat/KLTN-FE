@@ -21,6 +21,14 @@ export class UserService {
   createUser(data: CreateUserModel){
     return this.http.post(env.apiUrl + 'authenticate/register', data).pipe(map((res: any) => res));
   }
+
+  getListDepartment(gridModel: GridModel){
+    return this.http.post(env.apiUrl + 'department/getlist', gridModel).pipe(map((res: any) => res));
+  }
+
+  getListPosition(gridModel: GridModel){
+    return this.http.post(env.apiUrl + 'position/getlist', gridModel).pipe(map((res: any) => res));
+  }
 }
 
 class CreateUserModel {

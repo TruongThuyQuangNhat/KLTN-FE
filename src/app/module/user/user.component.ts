@@ -1,10 +1,13 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
+import { PageEvent } from '@angular/material/paginator';
+import {
+  MatSnackBar,
+  MatSnackBarHorizontalPosition,
+  MatSnackBarVerticalPosition,
+} from '@angular/material/snack-bar';
 import { DialogFilterComponent } from 'src/app/common/dialog-filter/dialog-filter.component';
-import { dialogModel } from 'src/app/model/dialog.model';
+import { dialogModel, radio } from 'src/app/model/dialog.model';
 import { selectModel } from 'src/app/model/select.model';
 import { UserService } from './user.service';
 import { GridModel } from 'src/app/common/model/gridModel';
@@ -19,8 +22,12 @@ import { delay } from 'rxjs';
   styleUrls: ['./user.component.scss']
 })
 export class UserComponent implements OnInit {
+  horizontalPosition: MatSnackBarHorizontalPosition = 'start';
+  verticalPosition: MatSnackBarVerticalPosition = 'bottom';
   loading: boolean = false;
   data: ResUsers[] = [];
+  listDepartment: radio[] = []
+  listPosition: radio[] = []
   displayedColumns: string[] = ['fullName', 'email', 'avatar', 'departmentName', 'positionName', 'roles'];
   dataTable: any[] = [
     {
@@ -104,42 +111,49 @@ export class UserComponent implements OnInit {
       type: 'text',
       title: 'User Name:',
       field: 'Username',
+      required: true,
       value: '',
     },
     {
       type: 'text',
       title: 'Tên:',
       field: 'FirstName',
+      required: true,
       value: '',
     },
     {
       type: 'text',
       title: 'Họ:',
       field: 'LastName',
+      required: true,
       value: '',
     },
     {
       type: 'text',
       title: 'Email:',
       field: 'Email',
+      required: true,
       value: '',
     },
     {
       type: 'upload',
       title: 'Avatar:',
       field: 'Avatar',
+      required: false,
       value: '',
     },
     {
       type: 'password',
       title: 'Mật Khẩu:',
       field: 'Password',
+      required: true,
       value: '',
     },
     {
       type: 'password',
       title: 'Lặp Lại Mật Khẩu:',
       field: 'RepeatPassword',
+      required: true,
       value: '',
     },
     {
@@ -147,25 +161,16 @@ export class UserComponent implements OnInit {
       title: 'Chọn Phòng Ban:',
       value: '0',
       field: 'DepartmentId',
-      listSelect: [
-        {text: 'none', value: ''},
-        {text: 'Phòng Nhân Sự', value: '05992bf5-2a88-4653-a19e-55cd4545ee46'},
-        {text: 'Phòng IT', value: '05992bf5-2a88-4653-a19e-55cd4545ee46'},
-        {text: 'Phòng Khách Hàng', value: '05992bf5-2a88-4653-a19e-55cd4545ee46'},
-        {text: 'Phòng R&D', value: '05992bf5-2a88-4653-a19e-55cd4545ee46'},
-      ]
+      required: true,
+      listSelect: []
     },
     {
       type: 'select',
       title: 'Chọn Chức Vụ:',
       value: '',
       field: 'PositionId',
-      listSelect: [
-        {text: 'none', value: ''},
-        {text: 'Giams đoc', value: '8bcb340d-50a5-4a21-a8d1-0d8df6dab262'},
-        {text: 'Bao ve', value: '8bcb340d-50a5-4a21-a8d1-0d8df6dab262'},
-        {text: 'Nhan vien', value: '8bcb340d-50a5-4a21-a8d1-0d8df6dab262'},
-      ]
+      required: true,
+      listSelect: []
     },
   ];
   dataSelect = selectData;
@@ -173,7 +178,8 @@ export class UserComponent implements OnInit {
   constructor(
     private userService: UserService,
     public dialog: MatDialog,
-    private _loading: LoadingService
+    private _loading: LoadingService,
+    private _snackBar: MatSnackBar
   ){}
 
   ngOnInit(): void {
@@ -184,6 +190,8 @@ export class UserComponent implements OnInit {
     this.pageEvent.pageSize = this.gridModel.pageSize
     this.getData();
     this.listenToLoading();
+    this.getListDepartment();
+    this.getListPosition();
   }
 
   getData(){
@@ -191,7 +199,36 @@ export class UserComponent implements OnInit {
       if(res){
         this.data = res.data;
         this.pageEvent.length = res.totalCount;
-        console.log(res)
+      }
+    })
+  }
+
+  getListDepartment(){
+    const gridModel: GridModel = new GridModel();
+    gridModel.pageLoading = false;
+    this.userService.getListDepartment(gridModel).subscribe(res => {
+      if(res){
+        this.listDepartment = res.data;
+        this.dataDialog.forEach(i => {
+          if(i.field === 'DepartmentId'){
+            i.listSelect = this.listDepartment;
+          }
+        })
+      }
+    })
+  }
+
+  getListPosition(){
+    const gridModel: GridModel = new GridModel();
+    gridModel.pageLoading = false;
+    this.userService.getListPosition(gridModel).subscribe(res => {
+      if(res){
+        this.listPosition = res.data;
+        this.dataDialog.forEach(i => {
+          if(i.field === 'PositionId'){
+            i.listSelect = this.listPosition;
+          }
+        })
       }
     })
   }
@@ -223,27 +260,41 @@ export class UserComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(result)
-      if(result?.Avatar){
-        const formImage = new FormData();
-        formImage.append('Avatar', result?.Avatar);
-        this.userService.uploadImage(formImage).subscribe(res => {
-          if(res && res.url){
-            result.Avatar = res.url;
-            this.userService.createUser(result).subscribe(res => {
-              console.log(res);
-            })
-          }
-        })
+      if(result){
+        if(result.Avatar){
+          const formImage = new FormData();
+          formImage.append('Avatar', result?.Avatar);
+          this.userService.uploadImage(formImage).subscribe(res => {
+            if(res && res.url){
+              result.Avatar = res.url;
+              this.userService.createUser(result).subscribe(res => {
+                this.openSnackBar(res.message)
+              })
+            }
+          })
+        } else {
+          this.userService.createUser(result).subscribe(res => {
+            this.openSnackBar(res.message)
+          })
+        }
       }
     });
   }
 
   listenToLoading(): void {
     this._loading.loadingSub
-      .pipe(delay(0)) // This prevents a ExpressionChangedAfterItHasBeenCheckedError for subsequent requests
+      .pipe(delay(0))
       .subscribe((loading) => {
         this.loading = loading;
       });
+  }
+
+  openSnackBar(content: string) {
+    this._snackBar.open(content, 'Đóng', {
+      horizontalPosition: this.horizontalPosition,
+      verticalPosition: this.verticalPosition,
+      duration: 5000,
+    });
   }
 }
 

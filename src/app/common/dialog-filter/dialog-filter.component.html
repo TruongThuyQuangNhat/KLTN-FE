@@ -11,9 +11,9 @@
                 <mat-radio-button 
                     *ngFor="let radio of item.listRadio" 
                     class="example-margin" 
-                    [value]="radio.value"
+                    [value]="radio.id"
                 >
-                    {{radio.text}}
+                    {{radio.name}}
                 </mat-radio-button>
               </mat-radio-group>
         </div>

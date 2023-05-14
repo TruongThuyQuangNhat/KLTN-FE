@@ -3,13 +3,14 @@ export interface dialogModel {
     value: any;
     title: string;
     field: string;
+    required: boolean;
     listRadio?: radio[],
     listSelect?: radio[],
 }
 
 export interface radio {
-    value: string,
-    text: string,
+    id: string,
+    name: string,
 }
 
 // date
