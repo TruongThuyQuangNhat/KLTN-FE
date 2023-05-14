@@ -1,0 +1,26 @@
+<div *ngIf="loading">
+    <mat-progress-bar
+      color="primary"
+      mode="indeterminate">
+    </mat-progress-bar>
+  </div>
+  
+  <div [class]="loading?'content2':'content'">
+    <mat-toolbar>
+        <button (click)="back()" mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+            <mat-icon>arrow_back</mat-icon>
+        </button>
+    </mat-toolbar>
+    <div *ngIf="user">
+        <img class="avatar" [src]="user.avatar?'https://localhost:5001/'+user.avatar:
+        'https://th.bing.com/th/id/R.136cc50d89f917ee8b820b39bbaa98d4?rik=LHOLLs3DfCbR9Q&pid=ImgRaw&r=0'"><br>
+        <mat-label><b>Họ và tên:</b></mat-label>
+        <mat-label>{{user.lastName + ' ' + user.firstName}}</mat-label><br>
+        <mat-label><b>Phòng ban:</b></mat-label>
+        <mat-label>{{department?.name}}</mat-label><br>
+        <mat-label><b>Chức danh:</b></mat-label>
+        <mat-label>{{position?.name}}</mat-label><br>
+        <mat-label><b>Email:</b></mat-label>
+        <mat-label>{{user.email}}</mat-label><br>
+    </div>
+  </div>

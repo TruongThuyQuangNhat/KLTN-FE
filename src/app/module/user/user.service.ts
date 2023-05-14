@@ -26,8 +26,20 @@ export class UserService {
     return this.http.post(env.apiUrl + 'department/getlist', gridModel).pipe(map((res: any) => res));
   }
 
+  getOneDepartment(id: string){
+    return this.http.get(env.apiUrl + 'department/get/' + id).pipe(map((res: any) => res));
+  }
+
+  getOnePosition(id: string){
+    return this.http.get(env.apiUrl + 'position/get/' + id).pipe(map((res: any) => res));
+  }
+
   getListPosition(gridModel: GridModel){
     return this.http.post(env.apiUrl + 'position/getlist', gridModel).pipe(map((res: any) => res));
+  }
+
+  getUser(id: string){
+    return this.http.get(env.apiUrl + 'authenticate/get/'+id).pipe(map((res: any) => res));
   }
 }
 

@@ -15,6 +15,8 @@ import { ResUsers } from 'src/app/common/model/listUserModel';
 import { DialogAddComponent } from 'src/app/common/dialog-add/dialog-add.component';
 import { LoadingService } from 'src/app/interceptor/loading/loading.service';
 import { delay } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { environment as env } from 'src/environments/environment';
 
 @Component({
   selector: 'app-user',
@@ -55,8 +57,9 @@ export class UserComponent implements OnInit {
       text: "Quyền",
     },
   ];
-  pageEvent: PageEvent = new PageEvent()
+  pageEvent: PageEvent = new PageEvent();
   gridModel: GridModel = new GridModel();
+  gridString: string;
   dataDialogTemp: any[] = [
     {
       type: 'text',
@@ -183,13 +186,28 @@ export class UserComponent implements OnInit {
     private userService: UserService,
     public dialog: MatDialog,
     private _loading: LoadingService,
-    private _snackBar: MatSnackBar
-  ){}
+    private _snackBar: MatSnackBar,
+    private router: Router,
+    private route: ActivatedRoute,
+  ){
+    this.route.params.subscribe(res => {
+      console.log(res)
+      if(res){
+        if(res.gridModel){
+          this.gridString = res.gridModel;
+        }
+      }
+    })
+  }
 
   ngOnInit(): void {
-    this.gridModel.page = 0;
-    this.gridModel.pageLoading = true;
-    this.gridModel.pageSize = 3;
+    if(this.gridString){
+      this.gridModel = JSON.parse(this.gridString);
+    } else {
+      this.gridModel.page = 0;
+      this.gridModel.pageLoading = true;
+      this.gridModel.pageSize = 3;
+    }
     this.pageEvent.pageIndex = this.gridModel.page;
     this.pageEvent.pageSize = this.gridModel.pageSize
     this.getData();
@@ -299,6 +317,14 @@ export class UserComponent implements OnInit {
       verticalPosition: this.verticalPosition,
       duration: 5000,
     });
+  }
+
+  handleActions(e: any){
+    if(e){
+      if(e.type == 'detail'){
+        this.router.navigate(['user/'+e.id, {gridModel: JSON.stringify(this.gridModel)}])
+      }
+    }
   }
 }
 

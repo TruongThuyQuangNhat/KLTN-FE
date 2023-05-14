@@ -16,11 +16,12 @@ import { TableComponent } from './common/table/table.component';
 import { DialogFilterComponent } from './common/dialog-filter/dialog-filter.component';
 import { DialogAddComponent } from './common/dialog-add/dialog-add.component';
 import { HttpRequestInterceptor } from './interceptor/loading/http-request-interceptor';
+import { UserDetailComponent } from './module/user/user-detail/user-detail.component';
 
 @NgModule({
   declarations: [
     ToolbarBasicExample, 
-    UserComponent, PageNotFoundComponent, LoginComponent, TableComponent, DialogFilterComponent, DialogAddComponent
+    UserComponent, PageNotFoundComponent, LoginComponent, TableComponent, DialogFilterComponent, DialogAddComponent, UserDetailComponent
   ],
   imports: [
     BrowserAnimationsModule,

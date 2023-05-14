@@ -32,6 +32,7 @@ export class TableComponent implements OnInit, OnChanges {
     pageIndex: number;
     pageSize: number;
   }>();
+  @Output() action = new EventEmitter();
 
   ngOnChanges(changes: SimpleChanges): void {
     if("data" in changes){
@@ -53,12 +54,12 @@ export class TableComponent implements OnInit, OnChanges {
   }
 
   viewDetail(id: string){
-    console.log(id)
+    this.action.emit({id, type: 'detail'});
   }
   editItem(id: string){
-    console.log(id)
+    this.action.emit({id, type: 'edit'});
   }
   deleteItem(id: string){
-    console.log(id)
+    this.action.emit({id, type: 'delete'});
   }
 }
