@@ -5,16 +5,30 @@
             <p>{{item.title}}</p>
             <mat-form-field class="w-100pt"  *ngIf="item.type === 'number' || item.type === 'text' || item.type === 'password'" appearance="fill">
                 <mat-label>{{item.subTitle}}</mat-label>
-                <input [type]="item.type" matInput [formControlName]="item.field">
+                <input [(ngModel)]="item.value" [type]="item.type" matInput [formControlName]="item.field">
             </mat-form-field>
             <mat-form-field class="w-100pt"  *ngIf="item.type === 'select'" appearance="fill">
                 <mat-label>select item</mat-label>
-                <mat-select [value]="item.value" [formControlName]="item.field">
+                <mat-select *ngIf="item.value" [(value)]="item.value">
                     <mat-option *ngFor="let i of item.listSelect" [value]="i.id">
                       {{i.name}}
                     </mat-option>
                 </mat-select>
+                <mat-select *ngIf="!item.value" [formControlName]="item.field">
+                  <mat-option *ngFor="let i of item.listSelect" [value]="i.id">
+                    {{i.name}}
+                  </mat-option>
+              </mat-select>
             </mat-form-field>
+            <!-- <mat-form-field appearance="fill" *ngIf="check">
+              <mat-label>Select an option</mat-label>
+              <mat-select [(value)]="selected">
+                <mat-option>None</mat-option>
+                <mat-option value="option1">Option 1</mat-option>
+                <mat-option value="option2">Option 2</mat-option>
+                <mat-option value="option3">Option 3</mat-option>
+              </mat-select>
+            </mat-form-field> -->
             <div *ngIf="item.type === 'radio'">
                 <mat-radio-group [formControlName]="item.field">
                     <mat-radio-button 
@@ -71,9 +85,17 @@
                   class="image-input"
                 />
                 <img
-                  *ngIf="imageProduct"
+                  *ngIf="imageProduct && !item.value"
                   class="preview"
-                  [src]="imageProduct"
+                  [src]="imageProduct?imageProduct:
+                  'https://th.bing.com/th/id/R.136cc50d89f917ee8b820b39bbaa98d4?rik=LHOLLs3DfCbR9Q&pid=ImgRaw&r=0'"
+                  style="height: 75px"
+                />
+                <img
+                  *ngIf="item.value"
+                  class="preview"
+                  [src]="item.value?'https://localhost:5001/'+item.value:
+                  'https://th.bing.com/th/id/R.136cc50d89f917ee8b820b39bbaa98d4?rik=LHOLLs3DfCbR9Q&pid=ImgRaw&r=0'"
                   style="height: 75px"
                 />
             </div>

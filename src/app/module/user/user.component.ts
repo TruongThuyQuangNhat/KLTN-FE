@@ -323,6 +323,78 @@ export class UserComponent implements OnInit {
     if(e){
       if(e.type == 'detail'){
         this.router.navigate(['user/'+e.id, {gridModel: JSON.stringify(this.gridModel)}])
+      } else if(e.type == 'edit'){
+        this.userService.getUser(e.id).subscribe(res => {
+          console.log(res)
+          if(res){
+            const dataDialogEdit: dialogModel[] = [
+              {
+                type: 'text',
+                title: 'Tên:',
+                field: 'FirstName',
+                subTitle: 'Tên, vd: Nhật',
+                required: true,
+                value: res.firstName,
+              },
+              {
+                type: 'text',
+                title: 'Họ:',
+                field: 'LastName',
+                subTitle: 'Họ, vd: Trương',
+                required: true,
+                value: res.lastName,
+              },
+              {
+                type: 'text',
+                title: 'Email:',
+                field: 'Email',
+                subTitle: 'Email, vd: ttqnhat@email.com',
+                required: true,
+                value: res.email,
+              },
+              {
+                type: 'upload',
+                title: 'Avatar:',
+                field: 'Avatar',
+                required: false,
+                value: res.avatar,
+              },
+              {
+                type: 'text',
+                title: 'Phone:',
+                field: 'PhoneNumber',
+                subTitle: 'vd: 098877665522',
+                required: false,
+                value: res.phoneNumber,
+              },
+              {
+                type: 'select',
+                title: 'Chọn Phòng Ban:',
+                value: res.departmentId,
+                field: 'DepartmentId',
+                required: true,
+                listSelect: this.listDepartment
+              },
+              {
+                type: 'select',
+                title: 'Chọn Chức Vụ:',
+                value: res.positionId,
+                field: 'PositionId',
+                required: true,
+                listSelect: this.listPosition
+              },
+            ];
+            console.log(dataDialogEdit)
+            const dialogRef = this.dialog.open(DialogAddComponent, {
+              data: dataDialogEdit,
+              width: '700px',
+            });
+        
+            dialogRef.afterClosed().subscribe(result => {
+              console.log(result);
+            });
+          }
+        })
       }
     }
   }
