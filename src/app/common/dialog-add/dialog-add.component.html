@@ -8,13 +8,9 @@
                 <input [(ngModel)]="item.value" [type]="item.type" matInput [formControlName]="item.field">
             </mat-form-field>
             <mat-form-field class="w-100pt"  *ngIf="item.type === 'select'" appearance="fill">
+              <p>Giá trị hiện tại: {{item.value}}</p>
                 <mat-label>select item</mat-label>
-                <mat-select *ngIf="item.value" [(value)]="item.value">
-                    <mat-option *ngFor="let i of item.listSelect" [value]="i.id">
-                      {{i.name}}
-                    </mat-option>
-                </mat-select>
-                <mat-select *ngIf="!item.value" [formControlName]="item.field">
+                <mat-select [formControlName]="item.field">
                   <mat-option *ngFor="let i of item.listSelect" [value]="i.id">
                     {{i.name}}
                   </mat-option>

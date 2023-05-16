@@ -52,6 +52,8 @@ export class DialogAddComponent implements OnInit {
         }
       }
     })
+    console.log(res)
+    console.log(check)
     if(check){
       this.dialogRef.close(res);
     }

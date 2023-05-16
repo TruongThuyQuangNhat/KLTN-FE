@@ -150,6 +150,14 @@ export class UserComponent implements OnInit {
       value: '',
     },
     {
+      type: 'text',
+      title: 'Phone:',
+      field: 'PhoneNumber',
+      subTitle: 'vd: 098877665522',
+      required: false,
+      value: '',
+    },
+    {
       type: 'password',
       title: 'Mật Khẩu:',
       field: 'Password',
@@ -326,6 +334,8 @@ export class UserComponent implements OnInit {
       } else if(e.type == 'edit'){
         this.userService.getUser(e.id).subscribe(res => {
           console.log(res)
+          const dep = this.listDepartment.find(i => i.id == res.departmentId)
+          const po = this.listPosition.find(i => i.id == res.positionId)
           if(res){
             const dataDialogEdit: dialogModel[] = [
               {
@@ -370,17 +380,17 @@ export class UserComponent implements OnInit {
               {
                 type: 'select',
                 title: 'Chọn Phòng Ban:',
-                value: res.departmentId,
+                value: dep?.name,
                 field: 'DepartmentId',
-                required: true,
+                required: false,
                 listSelect: this.listDepartment
               },
               {
                 type: 'select',
                 title: 'Chọn Chức Vụ:',
-                value: res.positionId,
+                value: po?.name,
                 field: 'PositionId',
-                required: true,
+                required: false,
                 listSelect: this.listPosition
               },
             ];
@@ -392,6 +402,32 @@ export class UserComponent implements OnInit {
         
             dialogRef.afterClosed().subscribe(result => {
               console.log(result);
+              if(result){
+                result.Id = res.id;
+                if(!result.PositionId){
+                  result.PositionId = res.positionId
+                }
+                if(!result.DepartmentId){
+                  result.DepartmentId = res.departmentId
+                }
+                if(result.Avatar){
+                  const formImage = new FormData();
+                  formImage.append('Avatar', result?.Avatar);
+                  this.userService.uploadImage(formImage).subscribe(res => {
+                    if(res && res.url){
+                      result.Avatar = res.url;
+                      this.userService.updateUser(result).subscribe(res => {
+                        this.openSnackBar(res.message)
+                      })
+                    }
+                  })
+                } else {
+                  result.Avatar = res.avatar;
+                  this.userService.updateUser(result).subscribe(res => {
+                    this.openSnackBar(res.message)
+                  })
+                }
+              }
             });
           }
         })

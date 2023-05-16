@@ -22,5 +22,9 @@
         <mat-label>{{position?.name}}</mat-label><br>
         <mat-label><b>Email:</b></mat-label>
         <mat-label>{{user.email}}</mat-label><br>
+        <div *ngIf="user.phoneNumber">
+          <mat-label><b>Phone:</b></mat-label>
+          <mat-label>{{user.phoneNumber}}</mat-label><br>
+        </div>
     </div>
   </div>

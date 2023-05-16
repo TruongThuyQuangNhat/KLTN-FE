@@ -6,10 +6,8 @@ export class User {
     departmentId: string;
     positionId: string;
     managerId: string;
-    dayOffId: string;
     salaryId: string;
-    bonusId: string;
-    advanceMoneyId: string;
     userName: string;
     email: string;
+    phoneNumber: string;
 }

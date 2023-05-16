@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs';
 import { GridModel } from 'src/app/common/model/gridModel';
+import { User } from 'src/app/common/model/userModel';
 import { environment as env } from 'src/environments/environment';
 
 @Injectable({
@@ -40,6 +41,10 @@ export class UserService {
 
   getUser(id: string){
     return this.http.get(env.apiUrl + 'authenticate/get/'+id).pipe(map((res: any) => res));
+  }
+
+  updateUser(data: any){
+    return this.http.post(env.apiUrl + 'authenticate/update', data).pipe(map((res: any) => res));
   }
 }
 
