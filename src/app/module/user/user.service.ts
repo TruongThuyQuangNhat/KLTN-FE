@@ -1,6 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map } from 'rxjs';
+import { throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { GridModel } from 'src/app/common/model/gridModel';
 import { User } from 'src/app/common/model/userModel';
 import { environment as env } from 'src/environments/environment';

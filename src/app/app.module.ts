@@ -18,6 +18,7 @@ import { DialogAddComponent } from './common/dialog-add/dialog-add.component';
 import { HttpRequestInterceptor } from './interceptor/loading/http-request-interceptor';
 import { UserDetailComponent } from './module/user/user-detail/user-detail.component';
 import { DialogMessageComponent } from './common/dialog-message/dialog-message.component';
+import { HttpErrorInterceptor } from './interceptor/http-err/http-error.interceptor';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { DialogMessageComponent } from './common/dialog-message/dialog-message.c
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: HttpRequestInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true },
   ],
   bootstrap: [ToolbarBasicExample],
 })

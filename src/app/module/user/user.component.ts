@@ -217,8 +217,6 @@ export class UserComponent implements OnInit {
       this.gridModel.pageLoading = true;
       this.gridModel.pageSize = 3;
     }
-    this.pageEvent.pageIndex = this.gridModel.page;
-    this.pageEvent.pageSize = this.gridModel.pageSize
     this.getData();
     this.listenToLoading();
     this.getListDepartment();
@@ -229,7 +227,12 @@ export class UserComponent implements OnInit {
     this.userService.getUsers(this.gridModel).subscribe((res: any) => {
       if(res){
         this.data = res.data;
-        this.pageEvent.length = res.totalCount;
+        const temp: PageEvent = {
+          length: res.totalCount,
+          pageIndex: res.page-1,
+          pageSize: res.pageSize
+        }
+        this.pageEvent = temp;
       }
     })
   }
@@ -290,7 +293,6 @@ export class UserComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result)
       if(result){
         if(result.Avatar){
           const formImage = new FormData();
@@ -418,14 +420,16 @@ export class UserComponent implements OnInit {
                     if(res && res.url){
                       result.Avatar = res.url;
                       this.userService.updateUser(result).subscribe(res => {
-                        this.openSnackBar(res.message)
+                        this.getData();
+                        this.openSnackBar(res.message);
                       })
                     }
                   })
                 } else {
                   result.Avatar = res.avatar;
                   this.userService.updateUser(result).subscribe(res => {
-                    this.openSnackBar(res.message)
+                    this.getData();
+                    this.openSnackBar(res.message);
                   })
                 }
               }
@@ -445,12 +449,25 @@ export class UserComponent implements OnInit {
           if(result == 'success'){
             this.userService.deleteUser(e.item.id).subscribe(res => {
               if(res){
+                this.getData();
                 this.openSnackBar(res.message)
               }
             })
           }
         })
       }
+    }
+  }
+
+  search(e: any){
+    if(e.target.value){
+      this.gridModel.page = 0;
+      this.gridModel.searchText = e.target.value;
+      this.getData();
+    } else {
+      this.gridModel.page = 0;
+      this.gridModel.searchText = '';
+      this.getData();
     }
   }
 }

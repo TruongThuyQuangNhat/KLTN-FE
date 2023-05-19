@@ -28,7 +28,7 @@
     </mat-form-field>
     <span class="example-spacer"></span>
     <mat-form-field class="example-full-width m-t-20 w-200">
-      <input type="text" matInput placeholder="search">
+      <input type="text" [value]="gridModel.searchText" matInput placeholder="search" (change)="search($event)">
     </mat-form-field>
     <button (click)="openAdd()" mat-raised-button color="primary" class="example-icon m-l-15" aria-label="Example icon-button with share icon">
       <mat-icon>add</mat-icon>

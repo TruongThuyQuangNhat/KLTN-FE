@@ -18,15 +18,7 @@ export class TableComponent implements OnInit, OnChanges {
   @Input() data: ResUsers[] = [];
   @Input() dataTable: any[] = [];
   @Input() pageEvent: PageEvent = new PageEvent();
-  // @Input("paginatorinput") set setpagi(paginatorinput: {
-  //   page: number;
-  //   pageSize: number;
-  //   totalCount: number;
-  // }) {
-  //   this.pageEvent.length = paginatorinput.totalCount;
-  //   this.pageEvent.pageIndex = paginatorinput.page;
-  //   this.pageEvent.pageSize = paginatorinput.pageSize;
-  // }
+
   dataSource = new MatTableDataSource<ResUsers>(this.data);
   @Output() paginator = new EventEmitter<{
     pageIndex: number;
@@ -38,9 +30,7 @@ export class TableComponent implements OnInit, OnChanges {
     if("data" in changes){
       this.dataSource = new MatTableDataSource<ResUsers>(this.data);
     }
-    if("pageEvent" in changes){
-      this.pageEvent.pageIndex;
-    }
+    console.log(changes);
   }
 
   ngOnInit(): void {
