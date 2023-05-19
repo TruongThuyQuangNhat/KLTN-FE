@@ -46,6 +46,10 @@ export class UserService {
   updateUser(data: any){
     return this.http.post(env.apiUrl + 'authenticate/update', data).pipe(map((res: any) => res));
   }
+
+  deleteUser(id: string){
+    return this.http.delete(env.apiUrl + 'authenticate/delete/'+id).pipe(map((res: any) => res));
+  }
 }
 
 class CreateUserModel {

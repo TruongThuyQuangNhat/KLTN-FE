@@ -17,6 +17,7 @@ import { LoadingService } from 'src/app/interceptor/loading/loading.service';
 import { delay } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment as env } from 'src/environments/environment';
+import { DialogMessageComponent } from 'src/app/common/dialog-message/dialog-message.component';
 
 @Component({
   selector: 'app-user',
@@ -429,6 +430,24 @@ export class UserComponent implements OnInit {
                 }
               }
             });
+          }
+        })
+      } else if(e.type == 'delete'){
+        const dialogRef = this.dialog.open(DialogMessageComponent, {
+          data: {
+            title: 'Xóa User',
+            content: 'Bạn có muốn xóa user: ' + e.item.lastName + ' ' + e.item.firstName,
+          },
+          width: '500px',
+        });
+    
+        dialogRef.afterClosed().subscribe(result => {
+          if(result == 'success'){
+            this.userService.deleteUser(e.item.id).subscribe(res => {
+              if(res){
+                this.openSnackBar(res.message)
+              }
+            })
           }
         })
       }

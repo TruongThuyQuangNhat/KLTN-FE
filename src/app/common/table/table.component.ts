@@ -59,7 +59,7 @@ export class TableComponent implements OnInit, OnChanges {
   editItem(id: string){
     this.action.emit({id, type: 'edit'});
   }
-  deleteItem(id: string){
-    this.action.emit({id, type: 'delete'});
+  deleteItem(item: any){
+    this.action.emit({item, type: 'delete'});
   }
 }
