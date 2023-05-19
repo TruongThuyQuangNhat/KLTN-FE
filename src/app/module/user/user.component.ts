@@ -10,7 +10,7 @@ import { DialogFilterComponent } from 'src/app/common/dialog-filter/dialog-filte
 import { dialogModel, radio } from 'src/app/model/dialog.model';
 import { selectModel } from 'src/app/model/select.model';
 import { UserService } from './user.service';
-import { GridModel } from 'src/app/common/model/gridModel';
+import { FilterModel, GridModel } from 'src/app/common/model/gridModel';
 import { ResUsers } from 'src/app/common/model/listUserModel';
 import { DialogAddComponent } from 'src/app/common/dialog-add/dialog-add.component';
 import { LoadingService } from 'src/app/interceptor/loading/loading.service';
@@ -189,7 +189,11 @@ export class UserComponent implements OnInit {
       listSelect: []
     },
   ];
-  dataSelect = selectData;
+
+  idDepartment: string = '';
+  idPosition: string = '';
+  dataFilterDepartment: FilterModel = new FilterModel();
+  dataFilterPosition: FilterModel = new FilterModel();
 
   constructor(
     private userService: UserService,
@@ -212,6 +216,14 @@ export class UserComponent implements OnInit {
   ngOnInit(): void {
     if(this.gridString){
       this.gridModel = JSON.parse(this.gridString);
+      this.gridModel.listFilter.forEach(i => {
+        if(i.filterColumns == 'Position'){
+          this.idPosition = i.filterData
+        }
+        if(i.filterColumns == 'Department'){
+          this.idDepartment = i.filterData
+        }
+      })
     } else {
       this.gridModel.page = 0;
       this.gridModel.pageLoading = true;
@@ -470,13 +482,34 @@ export class UserComponent implements OnInit {
       this.getData();
     }
   }
-}
 
-const selectData: selectModel[] = [
-  { value: 'A', viewValue: 'Phòng Ban A'},
-  { value: 'B', viewValue: 'Phòng Ban B'},
-  { value: 'C', viewValue: 'Phòng Ban C'},
-  { value: 'D', viewValue: 'Phòng Ban D'}
-]
+  chooseDepartment(id: any){
+    this.gridModel.listFilter = this.gridModel.listFilter.filter(i => i.filterColumns !== 'Department')
+    if(id.value){
+      this.idDepartment = id.value;
+      this.dataFilterDepartment.filterData = this.idDepartment;
+      this.dataFilterDepartment.filterDirections = '=';
+      this.dataFilterDepartment.filterColumns = 'Department';
+      this.gridModel.listFilter.push(this.dataFilterDepartment)
+    } else {
+      this.idDepartment = '';
+    }
+    this.getData();
+  }
+
+  choosePosition(id: any){
+    this.gridModel.listFilter = this.gridModel.listFilter.filter(i => i.filterColumns !== 'Position')
+    if(id.value){
+      this.idPosition = id.value;
+      this.dataFilterPosition.filterData = this.idPosition;
+      this.dataFilterPosition.filterDirections = '=';
+      this.dataFilterPosition.filterColumns = 'Position';
+      this.gridModel.listFilter.push(this.dataFilterPosition)
+    } else {
+      this.idPosition = '';
+    }
+    this.getData();
+  }
+}
 
 

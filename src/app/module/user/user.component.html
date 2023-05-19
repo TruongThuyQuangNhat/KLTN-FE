@@ -11,18 +11,20 @@
       <mat-icon>tune</mat-icon>
     </button>
     <mat-form-field appearance="fill" class="m-t-20 w-200 m-l-15">
-      <mat-label>Favorite food</mat-label>
-      <mat-select>
-        <mat-option *ngFor="let item of dataSelect" [value]="item.value">
-          {{item.viewValue}}
+      <mat-label>Phòng Ban</mat-label>
+      <mat-select [value]="idDepartment" (selectionChange)="chooseDepartment($event)">
+        <mat-option [value]="''">none</mat-option>
+        <mat-option *ngFor="let item of listDepartment" [value]="item.id">
+          {{item.name}}
         </mat-option>
       </mat-select>
     </mat-form-field>
     <mat-form-field appearance="fill" class="m-t-20 w-200 m-l-15">
-      <mat-label>Favorite food</mat-label>
-      <mat-select>
-        <mat-option *ngFor="let item of dataSelect" [value]="item.value">
-          {{item.viewValue}}
+      <mat-label>Chức Vụ</mat-label>
+      <mat-select [value]="idPosition"  (selectionChange)="choosePosition($event)">
+        <mat-option  [value]="''">none</mat-option>
+        <mat-option *ngFor="let item of listPosition" [value]="item.id">
+          {{item.name}}
         </mat-option>
       </mat-select>
     </mat-form-field>
