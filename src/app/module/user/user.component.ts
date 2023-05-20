@@ -175,7 +175,7 @@ export class UserComponent implements OnInit {
     {
       type: 'select',
       title: 'Chọn Phòng Ban:',
-      value: '0',
+      value: '',
       field: 'DepartmentId',
       required: true,
       listSelect: []

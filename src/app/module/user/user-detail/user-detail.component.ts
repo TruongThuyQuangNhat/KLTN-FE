@@ -45,6 +45,9 @@ export class UserDetailComponent implements OnInit {
     if(this.id){
       this.userService.getUser(this.id).subscribe(res => {
         if(res){
+          this.userService.getUserInfo(this.id).subscribe(res => {
+            console.log(res)
+          })
           this.userService.getOneDepartment(res.departmentId).subscribe(res => {
             if(res){
               this.department = res;

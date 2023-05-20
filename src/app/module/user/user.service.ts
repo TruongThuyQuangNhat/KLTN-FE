@@ -51,6 +51,10 @@ export class UserService {
   deleteUser(id: string){
     return this.http.delete(env.apiUrl + 'authenticate/delete/'+id).pipe(map((res: any) => res));
   }
+
+  getUserInfo(id: string){
+    return this.http.get(env.apiUrl + 'user/get/' + id).pipe(map((res: any) => res));
+  }
 }
 
 class CreateUserModel {
