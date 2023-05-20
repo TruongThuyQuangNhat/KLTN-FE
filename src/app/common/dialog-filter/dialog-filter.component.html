@@ -1,55 +1,45 @@
 <h1 mat-dialog-title>dialog title</h1>
 <div mat-dialog-content>
-    <div *ngFor="let item of data">
-        <p>{{item.title}}</p>
-        <mat-form-field class="w-100pt"  *ngIf="item.type === 'number' || item.type === 'text'" appearance="fill">
-            <mat-label>number and text title</mat-label>
-            <input [type]="item.type" matInput [(ngModel)]="item.value">
-        </mat-form-field>
-        <div *ngIf="item.type === 'radio'" appearance="fill">
-            <mat-radio-group [(ngModel)]="item.value">
-                <mat-radio-button 
-                    *ngFor="let radio of item.listRadio" 
-                    class="example-margin" 
-                    [value]="radio.id"
-                >
-                    {{radio.name}}
-                </mat-radio-button>
-              </mat-radio-group>
-        </div>
-    </div>
     <div>
         <mat-accordion>
+          <div *ngFor="let item of data">
             <mat-expansion-panel hideToggle>
               <mat-expansion-panel-header>
                 <mat-panel-title>
-                  This is the expansion title
+                  {{item.title}}
                 </mat-panel-title>
-                <mat-panel-description>
-                  This is a summary of the content
+                <mat-panel-description *ngIf="item.field != 'OrderBy'">
+                  {{item.description + ' ' + item.textOperator + ' ' + item.textOfValue}}
+                </mat-panel-description>
+                <mat-panel-description *ngIf="item.field == 'OrderBy'">
+                  {{item.description + ' ' + item.textOfValue + ' từ ' + item.textOperator}}
                 </mat-panel-description>
               </mat-expansion-panel-header>
-              <p>This is the primary content of the panel.</p>
+              <mat-form-field appearance="fill" class="m-t-20 w-200 m-l-15">
+                <mat-label>Chọn option của {{item.title}}</mat-label>
+                <mat-select [value]="item.operator" (selectionChange)="chooseOperator($event, item.field)">
+                  <mat-option [value]="''">none</mat-option>
+                  <mat-option *ngFor="let i of item.listOperator" [value]="i.value">
+                    {{i.text}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field appearance="fill" class="m-t-20 w-200 m-l-15">
+                <mat-label>Chọn giá trị của {{item.title}}</mat-label>
+                <mat-select [value]="item.value" (selectionChange)="chooseSelect($event, item.field)">
+                  <mat-option [value]="''">none</mat-option>
+                  <mat-option *ngFor="let i of item.listSelect" [value]="i.id">
+                    {{i.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
             </mat-expansion-panel>
-            <mat-expansion-panel (opened)="true"
-                                 (closed)="false">
-              <mat-expansion-panel-header>
-                <mat-panel-title>
-                  Self aware panel
-                </mat-panel-title>
-                <mat-panel-description>
-                  Currently I am open
-                </mat-panel-description>
-              </mat-expansion-panel-header>
-              <p>I'm visible because I am open</p>
-              <button mat-button>click me</button>
-              <button mat-button>click file</button>
-            </mat-expansion-panel>
+          </div>
           </mat-accordion>
           
     </div>
 </div>
 <div mat-dialog-actions class="footer">
-  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
+  <button mat-button (click)="success()" [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
   <button mat-button (click)="onNoClick()">cancel</button>
 </div>

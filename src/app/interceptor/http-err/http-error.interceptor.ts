@@ -30,10 +30,16 @@ return next.handle(request)
   .pipe(
     catchError( (error: HttpErrorResponse) => { 
        let errMsg = '';
-       for(let key in error.error.errors){
-        errMsg = error.error.errors[key]
+       if(error.error.message){
+        errMsg = error.error.message;
+        this.openSnackBar(errMsg)
+       } else {
+        for(let key in error.error.errors){
+          errMsg = error.error.errors[key]
+         }
+         this.openSnackBar(errMsg[0])
        }
-       this.openSnackBar(errMsg[0])
+       console.log(error)
        return throwError(() => new Error(error.error));
      })
   )

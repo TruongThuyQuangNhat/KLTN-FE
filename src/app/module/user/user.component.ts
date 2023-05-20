@@ -191,9 +191,83 @@ export class UserComponent implements OnInit {
   ];
 
   idDepartment: string = '';
+  textDepartment: string = '';
   idPosition: string = '';
+  textPosition: string = '';
   dataFilterDepartment: FilterModel = new FilterModel();
   dataFilterPosition: FilterModel = new FilterModel();
+
+  dataFilterDialog: any[] = [
+    {
+      title: "Phòng Ban",
+      field: 'Department',
+      description: 'Chọn User có Phòng Ban',
+      value: '',
+      textOfValue: '',
+      listSelect: [],
+      operator: '',
+      textOperator: '',
+      listOperator: [
+        {
+          text: 'Bằng Với',
+          value: '='
+        },
+        {
+          text: 'Khác Với',
+          value: '!='
+        },
+      ]
+    },
+    {
+      title: "Chức Vụ",
+      field: 'Position',
+      description: 'Chọn User có Chức Vụ',
+      value: '',
+      textOfValue: '',
+      listSelect: [],
+      operator: '',
+      textOperator: '',
+      listOperator: [
+        {
+          text: 'Bằng Với',
+          value: '='
+        },
+        {
+          text: 'Khác Với',
+          value: '!='
+        },
+      ]
+    },
+    {
+      title: "Sắp xếp theo Họ Tên",
+      field: 'OrderBy',
+      description: 'User được sắp xếp theo',
+      value: '',
+      textOfValue: '',
+      listSelect: [
+        {
+          id: 'FirstName',
+          name: 'Tên'
+        },
+        {
+          id: 'LastName',
+          name: 'Họ'
+        },
+      ],
+      operator: '',
+      textOperator: '',
+      listOperator: [
+        {
+          text: 'A-Z',
+          value: 'asc'
+        },
+        {
+          text: 'Z-A',
+          value: 'desc'
+        },
+      ]
+    }
+  ];
 
   constructor(
     private userService: UserService,
@@ -260,6 +334,11 @@ export class UserComponent implements OnInit {
             i.listSelect = this.listDepartment;
           }
         })
+        this.dataFilterDialog.forEach(i => {
+          if(i.field === 'Department'){
+            i.listSelect = this.listDepartment;
+          }
+        })
       }
     })
   }
@@ -272,6 +351,11 @@ export class UserComponent implements OnInit {
         this.listPosition = res.data;
         this.dataDialog.forEach(i => {
           if(i.field === 'PositionId'){
+            i.listSelect = this.listPosition;
+          }
+        });
+        this.dataFilterDialog.forEach(i => {
+          if(i.field === 'Position'){
             i.listSelect = this.listPosition;
           }
         })
@@ -287,14 +371,56 @@ export class UserComponent implements OnInit {
   }
 
 
-  openDialog(): void {
+  openDialogFilter(): void {
+    if(this.idDepartment || this.idPosition){
+      this.dataFilterDialog.forEach(i => {
+        if(i.field !== 'OrderBy'){
+          if(i.field == 'Position'){
+            i.value = this.idPosition?this.idPosition:'';
+            i.textOfValue = this.idPosition?this.textPosition:'';
+            i.operator = this.idPosition?'=':'';
+            i.textOperator = this.idPosition?'Bằng Với':'';
+          } else if(i.field == 'Department'){
+            i.value = this.idDepartment?this.idDepartment:'';
+            i.textOfValue = this.idDepartment?this.textDepartment:'';
+            i.operator = this.idDepartment?'=':'';
+            i.textOperator = this.idDepartment?'Bằng Với':'';
+          }
+        }
+      })
+    }
     const dialogRef = this.dialog.open(DialogFilterComponent, {
-      data: this.dataDialog,
+      data: this.dataFilterDialog,
       width: '700px',
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+      if(result.length != 0){
+        this.gridModel.listFilter = [];
+        this.idDepartment = '';
+        this.idPosition = '';
+        result.forEach((i: any) => {
+          if(i.filterColumns !== 'OrderBy'){
+            if(i.filterColumns && i.filterDirections && i.filterData){
+              this.gridModel.listFilter.push(i);
+              if(i.filterDirections == '='){
+                if(i.filterColumns == "Department"){
+                  this.idDepartment = i.filterData
+                } else if(i.filterColumns == "Position"){
+                  this.idPosition = i.filterData
+                }
+              }
+            }
+          } else {
+            if(i.filterColumns && i.filterDirections && i.filterData){
+              this.gridModel.srtColumns = i.filterData,
+              this.gridModel.srtDirections = i.filterDirections
+            }
+          }
+        });
+        this.gridModel.page = 0;
+        this.getData()
+      }
     });
   }
 
@@ -487,6 +613,11 @@ export class UserComponent implements OnInit {
     this.gridModel.listFilter = this.gridModel.listFilter.filter(i => i.filterColumns !== 'Department')
     if(id.value){
       this.idDepartment = id.value;
+      this.listDepartment.forEach(i => {
+        if(i.id == id.value){
+          this.textDepartment = i.name;
+        }
+      })
       this.dataFilterDepartment.filterData = this.idDepartment;
       this.dataFilterDepartment.filterDirections = '=';
       this.dataFilterDepartment.filterColumns = 'Department';
@@ -494,6 +625,7 @@ export class UserComponent implements OnInit {
     } else {
       this.idDepartment = '';
     }
+    this.gridModel.page = 0;
     this.getData();
   }
 
@@ -501,6 +633,11 @@ export class UserComponent implements OnInit {
     this.gridModel.listFilter = this.gridModel.listFilter.filter(i => i.filterColumns !== 'Position')
     if(id.value){
       this.idPosition = id.value;
+      this.listPosition.forEach(i => {
+        if(i.id == id.value){
+          this.textPosition = i.name;
+        }
+      })
       this.dataFilterPosition.filterData = this.idPosition;
       this.dataFilterPosition.filterDirections = '=';
       this.dataFilterPosition.filterColumns = 'Position';
@@ -508,6 +645,7 @@ export class UserComponent implements OnInit {
     } else {
       this.idPosition = '';
     }
+    this.gridModel.page = 0;
     this.getData();
   }
 }
