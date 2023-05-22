@@ -9,3 +9,12 @@
 .admin-left {
   width: 20%;
 }
+
+mat-card {
+  margin-top: 20px;
+}
+
+mat-card-content mat-icon {
+  margin-left: 20px;
+  padding-right: 20px;
+}

@@ -2,19 +2,47 @@
   <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon" (click)="drawer.toggle()">
     <mat-icon>menu</mat-icon>
   </button>
-  <span>My App</span>
-  <span class="example-spacer"></span>
-  <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
-    <mat-icon>favorite</mat-icon>
-  </button>
-  <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
-    <mat-icon>share</mat-icon>
-  </button>
+  <span>Doanh Nghiệp Số</span>
 </mat-toolbar>
 
 <mat-drawer-container class="admin-container" autosize>
   <mat-drawer #drawer class="admin-left" mode="side" opened>
-    <p>Auto-resizing sidenav</p>
+    <mat-card>
+      <mat-card-content>
+        <mat-icon>account_circle</mat-icon>
+        <mat-label>Quản lý nhân viên</mat-label>
+      </mat-card-content>
+    </mat-card>
+    <mat-card>
+      <mat-card-content>
+        <mat-icon>free_cancellation</mat-icon>
+        <mat-label>Quản lý ngày nghỉ</mat-label>
+      </mat-card-content>
+    </mat-card>
+    <mat-card>
+      <mat-card-content>
+        <mat-icon>currency_exchange</mat-icon>
+        <mat-label>Quản lý phiếu lương</mat-label>
+      </mat-card-content>
+    </mat-card>
+    <mat-card>
+      <mat-card-content>
+        <mat-icon>redeem</mat-icon>
+        <mat-label>Quản lý tiền thưởng</mat-label>
+      </mat-card-content>
+    </mat-card>
+    <mat-card>
+      <mat-card-content>
+        <mat-icon>request_quote</mat-icon>
+        <mat-label>Quản lý tiền ứng lương</mat-label>
+      </mat-card-content>
+    </mat-card>
+    <mat-card>
+      <mat-card-content>
+        <mat-icon>task_alt</mat-icon>
+        <mat-label>Quản lý công việc</mat-label>
+      </mat-card-content>
+    </mat-card>
   </mat-drawer>
 
   <mat-drawer-content>
