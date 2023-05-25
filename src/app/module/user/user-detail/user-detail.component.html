@@ -1,30 +1,288 @@
 <div *ngIf="loading">
-    <mat-progress-bar
-      color="primary"
-      mode="indeterminate">
-    </mat-progress-bar>
+  <mat-progress-bar
+    color="primary"
+    mode="indeterminate">
+  </mat-progress-bar>
+</div>
+
+<div [class]="loading?'content2':'content'">
+  <mat-toolbar>
+      <button (click)="back()" mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+          <mat-icon>arrow_back</mat-icon>
+      </button>
+  </mat-toolbar>
+  <div *ngIf="user">
+    <mat-card class="example-card">
+      <mat-card-header>
+        <img mat-card-avatar [src]="user.avatar?'https://localhost:5001/'+user.avatar:
+            'https://th.bing.com/th/id/R.136cc50d89f917ee8b820b39bbaa98d4?rik=LHOLLs3DfCbR9Q&pid=ImgRaw&r=0'">
+        <mat-card-title>{{user.lastName + ' ' + user.firstName}}</mat-card-title>
+        <mat-card-subtitle>{{position?.name}} - {{department?.name}} </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-label>
+          <mat-icon class="icon-info">mail</mat-icon>
+          <span class="text-info">{{user.email}}</span>
+        </mat-label>
+        <mat-label class="label-info" *ngIf="user.phoneNumber">
+          <mat-icon class="icon-info">call</mat-icon>
+          <span class="text-info">{{user.phoneNumber}}</span>
+        </mat-label>
+      </mat-card-content>
+    </mat-card>
+
+
+    <mat-accordion>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Thông tin cá nhân
+          </mat-panel-title>
+          <mat-panel-description>
+            giới tính, ngày sinh, địa chỉ,...
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <p>Địa chỉ</p>
+        <mat-form-field class="example-full-width w-500">
+          <mat-label>Địa chỉ</mat-label>
+          <input matInput placeholder="Chưa có dữ liệu" [value]="Address" [(ngModel)]="Address">
+        </mat-form-field>
+        <p>Giới tính</p>
+        <mat-form-field class="example-full-width w-500">
+          <mat-label>Giới tính</mat-label>
+          <input matInput placeholder="Chưa có dữ liệu" [value]="Sex" [(ngModel)]="Sex">
+        </mat-form-field>
+        <p>Tuổi</p>
+        <mat-form-field class="example-full-width w-500">
+          <mat-label>Tuổi</mat-label>
+          <input matInput placeholder="Chưa có dữ liệu" [value]="Age" [(ngModel)]="Age" type="number">
+        </mat-form-field>
+        <p>Ngày sinh</p>
+        <mat-form-field appearance="fill" class="w-500">
+          <mat-label>Ngày sinh</mat-label>
+          <input matInput [value]="BirthDay" [(ngModel)]="BirthDay" [matDatepicker]="picker">
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <p>Ngày bắt đầu làm việc</p>
+        <mat-form-field appearance="fill" class="w-500">
+          <mat-label>Ngày bắt đầu làm việc</mat-label>
+          <input matInput [value]="DateStartWork" [(ngModel)]="DateStartWork" [matDatepicker]="picker2">
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
+        </mat-form-field>
+        <br><button mat-raised-button (click)="saveInfo()" color="primary">Lưu</button>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Căn Cước Công Dân
+          </mat-panel-title>
+          <mat-panel-description>
+            CCCD
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <p>Số CCCD</p>
+        <mat-form-field class="example-full-width w-500">
+          <mat-label>Số CCCD</mat-label>
+          <input matInput placeholder="Chưa có dữ liệu" [value]="CCCDNumber" [(ngModel)]="CCCDNumber" type="number">
+        </mat-form-field>
+        <p>Ngày phát hành CCCD</p>
+        <mat-form-field appearance="fill" class="w-500">
+          <mat-label>Ngày phát hành CCCD</mat-label>
+          <input matInput [value]="CCCDIssueDate" [(ngModel)]="CCCDIssueDate" [matDatepicker]="picker3">
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle matIconSuffix [for]="picker3"></mat-datepicker-toggle>
+          <mat-datepicker #picker3></mat-datepicker>
+        </mat-form-field>
+        <p>Nơi phát hành CCCD</p>
+        <mat-form-field class="example-full-width w-500">
+          <mat-label>Nơi phát hành CCCD</mat-label>
+          <input matInput placeholder="Chưa có dữ liệu" [value]="CCCDAddress" [(ngModel)]="CCCDAddress">
+        </mat-form-field>
+        <br><button mat-raised-button (click)="saveInfo()" color="primary">Lưu</button>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Bảo Hiểm Xã Hội
+          </mat-panel-title>
+          <mat-panel-description>
+            BHXH
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <p>Số BHXH</p>
+        <mat-form-field class="example-full-width w-500">
+          <mat-label>Số BHXH</mat-label>
+          <input matInput placeholder="Chưa có dữ liệu" [value]="BHXHNumber" [(ngModel)]="BHXHNumber" type="number">
+        </mat-form-field>
+        <p>Ngày cấp BHXH</p>
+        <mat-form-field appearance="fill" class="w-500">
+          <mat-label>Ngày cấp BHXH</mat-label>
+          <input matInput [value]="BHXHIssueDate" [(ngModel)]="BHXHIssueDate" [matDatepicker]="picker4">
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle matIconSuffix [for]="picker4"></mat-datepicker-toggle>
+          <mat-datepicker #picker4></mat-datepicker>
+        </mat-form-field>
+        <p>Ngày tham gia BHXH</p>
+        <mat-form-field class="example-full-width w-500">
+          <mat-label>Ngày tham gia BHXH</mat-label>
+          <input matInput [value]="BHXHStartDate" [(ngModel)]="BHXHStartDate" [matDatepicker]="picker5">
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle matIconSuffix [for]="picker5"></mat-datepicker-toggle>
+          <mat-datepicker #picker5></mat-datepicker>
+        </mat-form-field>
+        <br><button mat-raised-button (click)="saveInfo()" color="primary">Lưu</button>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Bảo Hiểm Y Tế
+          </mat-panel-title>
+          <mat-panel-description>
+            BHYT
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <p>Số BHYT</p>
+        <mat-form-field class="example-full-width w-500">
+          <mat-label>Số BHYT</mat-label>
+          <input matInput placeholder="Chưa có dữ liệu" [value]="BHYTNumber" [(ngModel)]="BHYTNumber" type="number">
+        </mat-form-field>
+        <p>Ngày cấp BHYT</p>
+        <mat-form-field appearance="fill" class="w-500">
+          <mat-label>Ngày cấp BHYT</mat-label>
+          <input matInput [value]="BHYTIssueDate" [(ngModel)]="BHYTIssueDate" [matDatepicker]="picker6">
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle matIconSuffix [for]="picker6"></mat-datepicker-toggle>
+          <mat-datepicker #picker6></mat-datepicker>
+        </mat-form-field>
+        <p>Nơi cấp BHYT</p>
+        <mat-form-field class="example-full-width w-500">
+          <mat-label>Nơi cấp BHYT</mat-label>
+          <input matInput placeholder="Chưa có dữ liệu" [value]="BHYTAddress" [(ngModel)]="BHYTAddress">
+        </mat-form-field>
+        <br><button mat-raised-button (click)="saveInfo()" color="primary">Lưu</button>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Bảo Hiểm Thât Nghiệp
+          </mat-panel-title>
+          <mat-panel-description>
+            BHTN
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <p>Số BHTN</p>
+        <mat-form-field class="example-full-width w-500">
+          <mat-label>Số BHTN</mat-label>
+          <input matInput placeholder="Chưa có dữ liệu" [value]="BHTNNumber" [(ngModel)]="BHTNNumber" type="number">
+        </mat-form-field>
+        <p>Ngày cấp BHTN</p>
+        <mat-form-field appearance="fill" class="w-500">
+          <mat-label>Ngày cấp BHTN</mat-label>
+          <input matInput [value]="BHTNIssueDate" [(ngModel)]="BHTNIssueDate" [matDatepicker]="picker7">
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle matIconSuffix [for]="picker7"></mat-datepicker-toggle>
+          <mat-datepicker #picker7></mat-datepicker>
+        </mat-form-field>
+        <br><button mat-raised-button (click)="saveInfo()" color="primary">Lưu</button>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Sổ Lao Động
+          </mat-panel-title>
+          <mat-panel-description>
+            SLD
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <p>Số SLD</p>
+        <mat-form-field class="example-full-width w-500">
+          <mat-label>Số SLD</mat-label>
+          <input matInput placeholder="Chưa có dữ liệu" [value]="SLDNumber" [(ngModel)]="SLDNumber" type="number">
+        </mat-form-field>
+        <p>Ngày cấp SLD</p>
+        <mat-form-field appearance="fill" class="w-500">
+          <mat-label>Ngày cấp SLD</mat-label>
+          <input matInput [value]="SLDIssueDate" [(ngModel)]="SLDIssueDate" [matDatepicker]="picker8">
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle matIconSuffix [for]="picker8"></mat-datepicker-toggle>
+          <mat-datepicker #picker8></mat-datepicker>
+        </mat-form-field>
+        <p>Nơi cấp SLD</p>
+        <mat-form-field class="example-full-width w-500">
+          <mat-label>Nơi cấp SLD</mat-label>
+          <input matInput placeholder="Chưa có dữ liệu" [value]="SLDAddress" [(ngModel)]="SLDAddress">
+        </mat-form-field>
+        <br><button mat-raised-button (click)="saveInfo()" color="primary">Lưu</button>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Tài Khoản Ngân Hàng
+          </mat-panel-title>
+          <mat-panel-description>
+            Bank
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <p>Số tài khoản</p>
+        <mat-form-field class="example-full-width w-500">
+          <mat-label>Số tài khoản</mat-label>
+          <input matInput placeholder="Chưa có dữ liệu" [value]="BankNumber" [(ngModel)]="BankNumber" type="number">
+        </mat-form-field>
+        <p>Tên Ngân Hàng</p>
+        <mat-form-field class="example-full-width w-500">
+          <mat-label>Tên Ngân Hàng</mat-label>
+          <input matInput placeholder="Chưa có dữ liệu" [value]="BankName" [(ngModel)]="BankName" type="number">
+        </mat-form-field>
+        <p>Tên Tài Khoản Ngân Hàng</p>
+        <mat-form-field class="example-full-width w-500">
+          <mat-label>Tên Tài Khoản Ngân Hàng</mat-label>
+          <input matInput placeholder="Chưa có dữ liệu" [value]="BankAccountName" [(ngModel)]="BankAccountName" type="number">
+        </mat-form-field>
+        <br><button mat-raised-button (click)="saveInfo()" color="primary">Lưu</button>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Hợp Đống Lao Động
+          </mat-panel-title>
+          <mat-panel-description>
+            HĐLĐ
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <p>Số HĐLĐ</p>
+        <mat-form-field class="example-full-width w-500">
+          <mat-label>Số HĐLĐ</mat-label>
+          <input matInput placeholder="Chưa có dữ liệu" [value]="HDLDNumber" [(ngModel)]="HDLDNumber" type="number">
+        </mat-form-field>
+        <p>Ngày bắt đầu hợp đồng</p>
+        <mat-form-field appearance="fill" class="w-500">
+          <mat-label>Ngày bắt đầu hợp đồng</mat-label>
+          <input matInput [value]="HDLDStartDate" [(ngModel)]="HDLDStartDate" [matDatepicker]="picker9">
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle matIconSuffix [for]="picker9"></mat-datepicker-toggle>
+          <mat-datepicker #picker9></mat-datepicker>
+        </mat-form-field>
+        <p>Ngày kết thúc hợp đồng</p>
+        <mat-form-field appearance="fill" class="w-500">
+          <mat-label>Ngày kết thúc hợp đồng</mat-label>
+          <input matInput [value]="HDLDEndDate" [(ngModel)]="HDLDEndDate" [matDatepicker]="picker10">
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle matIconSuffix [for]="picker10"></mat-datepicker-toggle>
+          <mat-datepicker #picker10></mat-datepicker>
+        </mat-form-field>
+        <br><button mat-raised-button (click)="saveInfo()" color="primary">Lưu</button>
+      </mat-expansion-panel>
+    </mat-accordion>
   </div>
-  
-  <div [class]="loading?'content2':'content'">
-    <mat-toolbar>
-        <button (click)="back()" mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
-            <mat-icon>arrow_back</mat-icon>
-        </button>
-    </mat-toolbar>
-    <div *ngIf="user">
-        <img class="avatar" [src]="user.avatar?'https://localhost:5001/'+user.avatar:
-        'https://th.bing.com/th/id/R.136cc50d89f917ee8b820b39bbaa98d4?rik=LHOLLs3DfCbR9Q&pid=ImgRaw&r=0'"><br>
-        <mat-label><b>Họ và tên:</b></mat-label>
-        <mat-label>{{user.lastName + ' ' + user.firstName}}</mat-label><br>
-        <mat-label><b>Phòng ban:</b></mat-label>
-        <mat-label>{{department?.name}}</mat-label><br>
-        <mat-label><b>Chức danh:</b></mat-label>
-        <mat-label>{{position?.name}}</mat-label><br>
-        <mat-label><b>Email:</b></mat-label>
-        <mat-label>{{user.email}}</mat-label><br>
-        <div *ngIf="user.phoneNumber">
-          <mat-label><b>Phone:</b></mat-label>
-          <mat-label>{{user.phoneNumber}}</mat-label><br>
-        </div>
-    </div>
-  </div>
+</div>

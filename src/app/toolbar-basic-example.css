@@ -17,4 +17,6 @@ mat-card {
 mat-card-content mat-icon {
   margin-left: 20px;
   padding-right: 20px;
+  position: relative;
+  top: 5px;
 }
