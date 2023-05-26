@@ -439,12 +439,14 @@ export class UserComponent implements OnInit {
             if(res && res.url){
               result.Avatar = res.url;
               this.userService.createUser(result).subscribe(res => {
+                console.log(res)
                 this.openSnackBar(res.message)
               })
             }
           })
         } else {
           this.userService.createUser(result).subscribe(res => {
+            console.log(res)
             this.openSnackBar(res.message)
           })
         }

@@ -55,6 +55,10 @@ export class UserService {
   getUserInfo(id: string){
     return this.http.get(env.apiUrl + 'user/get/' + id).pipe(map((res: any) => res));
   }
+
+  updateUserInfo(data: any){
+    return this.http.put(env.apiUrl + 'user/update', data).pipe(map((res: any) => res));
+  }
 }
 
 class CreateUserModel {
