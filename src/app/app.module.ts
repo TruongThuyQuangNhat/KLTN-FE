@@ -19,11 +19,12 @@ import { HttpRequestInterceptor } from './interceptor/loading/http-request-inter
 import { UserDetailComponent } from './module/user/user-detail/user-detail.component';
 import { DialogMessageComponent } from './common/dialog-message/dialog-message.component';
 import { HttpErrorInterceptor } from './interceptor/http-err/http-error.interceptor';
+import { DayOffComponent } from './module/day-off/day-off.component';
 
 @NgModule({
   declarations: [
     ToolbarBasicExample, 
-    UserComponent, PageNotFoundComponent, LoginComponent, TableComponent, DialogFilterComponent, DialogAddComponent, UserDetailComponent, DialogMessageComponent
+    UserComponent, PageNotFoundComponent, LoginComponent, TableComponent, DialogFilterComponent, DialogAddComponent, UserDetailComponent, DialogMessageComponent, DayOffComponent
   ],
   imports: [
     BrowserAnimationsModule,

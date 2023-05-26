@@ -20,3 +20,8 @@ mat-card-content mat-icon {
   position: relative;
   top: 5px;
 }
+
+.check {
+  background-color: rgb(191, 220, 245);
+  height: auto;
+}

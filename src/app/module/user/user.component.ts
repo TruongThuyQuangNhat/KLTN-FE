@@ -36,26 +36,33 @@ export class UserComponent implements OnInit {
     {
       field: "fullName",
       text: "Tên",
+      type: "fullName",
+      main: true,
     },
     {
       field: "departmentName",
       text: "Phòng Ban",
+      type: "text",
     },
     {
       field: "email",
       text: "Email",
+      type: "text",
     },
     {
       field: "positionName",
       text: "Chức Vụ",
+      type: "text",
     },
     {
       field: "avatar",
       text: "Hình ảnh",
+      type: "avatar",
     },
     {
       field: "roles",
       text: "Quyền",
+      type: "text",
     },
   ];
   pageEvent: PageEvent = new PageEvent();
@@ -395,11 +402,11 @@ export class UserComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result.length != 0){
+      if(result?.length != 0){
         this.gridModel.listFilter = [];
         this.idDepartment = '';
         this.idPosition = '';
-        result.forEach((i: any) => {
+        result?.forEach((i: any) => {
           if(i.filterColumns !== 'OrderBy'){
             if(i.filterColumns && i.filterDirections && i.filterData){
               this.gridModel.listFilter.push(i);

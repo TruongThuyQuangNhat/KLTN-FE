@@ -1,0 +1,49 @@
+<div *ngIf="loading">
+<mat-progress-bar
+    color="primary"
+    mode="indeterminate">
+</mat-progress-bar>
+</div>
+
+<div [class]="loading?'content2':'content'">
+<mat-toolbar>
+    <button (click)="openDialogFilter()" mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+    <mat-icon>tune</mat-icon>
+    </button>
+    <mat-form-field appearance="fill" class="m-t-20 w-200 m-l-15">
+        <mat-label>Trạng Thái</mat-label>
+        <mat-select [value]="approval" (selectionChange)="chooseApproval($event)">
+          <mat-option [value]="''">none</mat-option>
+          <mat-option *ngFor="let item of listApproval" [value]="item.id">
+            {{item.name}}
+          </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field class="m-t-20 m-l-15">
+        <mat-label>Chọn khoảng thời gian</mat-label>
+        <mat-date-range-input [rangePicker]="picker">
+          <input matStartDate placeholder="Ngày bắt đầu" (dateChange)="onChangeStartDate($event)">
+          <input matEndDate placeholder="Ngày kết thúc" (dateChange)="onChangeEndDate($event)">
+        </mat-date-range-input>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+    <span class="example-spacer"></span>
+    <mat-form-field class="example-full-width m-t-20 w-200">
+    <input type="text" [value]="gridModel.searchText" matInput placeholder="search" (change)="search($event)">
+    </mat-form-field>
+    <button (click)="openAdd()" mat-raised-button color="primary" class="example-icon m-l-15" aria-label="Example icon-button with share icon">
+    <mat-icon>add</mat-icon>
+    Thêm
+    </button>
+</mat-toolbar>
+
+    <app-table 
+    [data]="data" 
+    [dataTable]="dataTable" 
+    [displayedColumns]="displayedColumns"
+    [pageEvent]="pageEvent"
+    (paginator)="handlePaginator($event)"
+    (action)="handleActions($event)"
+    ></app-table>
+</div>

@@ -7,13 +7,13 @@
 
 <mat-drawer-container class="admin-container" autosize>
   <mat-drawer #drawer class="admin-left" mode="side" opened>
-    <mat-card>
+    <mat-card [ngClass]="card=='user'?'check':''" (click)="Navigate('user')">
       <mat-card-content>
         <mat-icon>account_circle</mat-icon>
         <mat-label>Quản lý nhân viên</mat-label>
       </mat-card-content>
     </mat-card>
-    <mat-card>
+    <mat-card [ngClass]="card=='dayoff'?'check':''" (click)="Navigate('dayoff')">
       <mat-card-content>
         <mat-icon>free_cancellation</mat-icon>
         <mat-label>Quản lý ngày nghỉ</mat-label>

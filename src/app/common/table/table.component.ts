@@ -15,11 +15,11 @@ import { ResUsers } from '../model/listUserModel';
 
 export class TableComponent implements OnInit, OnChanges {
   @Input() displayedColumns: string[] = [];
-  @Input() data: ResUsers[] = [];
+  @Input() data: any[] = [];
   @Input() dataTable: any[] = [];
   @Input() pageEvent: PageEvent = new PageEvent();
 
-  dataSource = new MatTableDataSource<ResUsers>(this.data);
+  dataSource = new MatTableDataSource<any>(this.data);
   @Output() paginator = new EventEmitter<{
     pageIndex: number;
     pageSize: number;
@@ -28,7 +28,7 @@ export class TableComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if("data" in changes){
-      this.dataSource = new MatTableDataSource<ResUsers>(this.data);
+      this.dataSource = new MatTableDataSource<any>(this.data);
     }
     console.log(changes);
   }

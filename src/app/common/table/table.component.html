@@ -1,11 +1,11 @@
 <div class="mat-elevation-z8">
     <table mat-table [dataSource]="dataSource">
       <div *ngFor="let item of dataTable">
-        <div *ngIf="item.field == 'fullName'">
+        <div *ngIf="item.type == 'fullName'">
           <ng-container [matColumnDef]="item.field">
             <th mat-header-cell *matHeaderCellDef>{{item.text}}</th>
               <td mat-cell *matCellDef="let element">
-                <div class="container">
+                <div *ngIf="item.main" class="container">
                   <div class="image">
                     {{element.lastName + ' ' + element.firstName}}
                   </div>
@@ -23,10 +23,13 @@
                     </div>
                   </div>
                 </div>
+                <div *ngIf="!item.main">
+                  {{element.lastName + ' ' + element.firstName}}
+                </div>
               </td>
           </ng-container>
         </div>
-        <div *ngIf="item.field == 'avatar'">
+        <div *ngIf="item.type == 'avatar'">
           <ng-container [matColumnDef]="item.field">
             <th mat-header-cell *matHeaderCellDef>{{item.text}}</th>
             <td mat-cell *matCellDef="let element">
@@ -37,10 +40,44 @@
             </td>
           </ng-container>
         </div>
-        <div *ngIf="item.field !== 'fullName' && item.field !== 'avatar'">
+        <div *ngIf="item.type == 'date'">
           <ng-container [matColumnDef]="item.field">
             <th mat-header-cell *matHeaderCellDef>{{item.text}}</th>
-            <td mat-cell *matCellDef="let element">{{element[item.field]}}</td>
+            <td mat-cell *matCellDef="let element">{{element[item.field] | date: "dd/MM/yyyy"}}</td>
+          </ng-container>
+        </div>
+        <div *ngIf="item.type == 'text'">
+          <ng-container [matColumnDef]="item.field">
+            <th mat-header-cell *matHeaderCellDef>{{item.text}}</th>
+            <td mat-cell *matCellDef="let element">
+              <div *ngIf="item.main" class="container">
+                <div class="image">
+                  {{element[item.field]}}
+                </div>
+                <div class="middle">
+                  <div class="text">
+                    <div (click)="viewDetail(element.id)">
+                      <mat-icon color="accent">visibility</mat-icon>
+                    </div>
+                    <div (click)="editItem(element.id)">
+                      <mat-icon color="primary">edit</mat-icon>
+                    </div>
+                    <div (click)="deleteItem(element)">
+                      <mat-icon color="warn">delete</mat-icon>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="!item.main">
+                {{element[item.field]}}
+              </div>
+            </td>
+          </ng-container>
+        </div>
+        <div *ngIf="item.type == 'tick'">
+          <ng-container [matColumnDef]="item.field">
+            <th mat-header-cell *matHeaderCellDef>{{item.text}}</th>
+            <td mat-cell *matCellDef="let element"><mat-icon *ngIf="element[item.field]">check</mat-icon></td>
           </ng-container>
         </div>
       </div>
