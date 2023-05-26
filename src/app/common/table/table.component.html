@@ -59,10 +59,10 @@
                     <div (click)="viewDetail(element.id)">
                       <mat-icon color="accent">visibility</mat-icon>
                     </div>
-                    <div (click)="editItem(element.id)">
+                    <div *ngIf="item.edit" (click)="editItem(element.id)">
                       <mat-icon color="primary">edit</mat-icon>
                     </div>
-                    <div (click)="deleteItem(element)">
+                    <div *ngIf="item.delete" (click)="deleteItem(element)">
                       <mat-icon color="warn">delete</mat-icon>
                     </div>
                   </div>

@@ -1,0 +1,27 @@
+<div *ngIf="loading">
+    <mat-progress-bar
+        color="primary"
+        mode="indeterminate">
+    </mat-progress-bar>
+    </div>
+    
+    <div [class]="loading?'content2':'content'">
+    <mat-toolbar>
+        <button (click)="back()" mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+            <mat-icon>arrow_back</mat-icon>
+        </button>
+        <span class="example-spacer"></span>
+        <mat-form-field class="example-full-width m-t-20 w-200">
+        <input type="text" [value]="gridModel.searchText" matInput placeholder="search" (change)="search($event)">
+        </mat-form-field>
+    </mat-toolbar>
+    
+        <app-table 
+        [data]="data" 
+        [dataTable]="dataTable" 
+        [displayedColumns]="displayedColumns"
+        [pageEvent]="pageEvent"
+        (paginator)="handlePaginator($event)"
+        (action)="handleActions($event)"
+        ></app-table>
+    </div>

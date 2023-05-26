@@ -32,6 +32,8 @@ export class DayOffComponent {
       text: "Tên",
       type: "text",
       main: true,
+      delete: true,
+      edit: true,
     },
     {
       field: "dateOff",

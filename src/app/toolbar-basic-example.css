@@ -25,3 +25,7 @@ mat-card-content mat-icon {
   background-color: rgb(191, 220, 245);
   height: auto;
 }
+
+mat-label span {
+  color: rgb(193, 193, 193);
+}

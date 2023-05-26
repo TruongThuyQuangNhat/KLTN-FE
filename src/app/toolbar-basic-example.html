@@ -19,7 +19,7 @@
         <mat-label>Quản lý ngày nghỉ</mat-label>
       </mat-card-content>
     </mat-card>
-    <mat-card>
+    <mat-card [ngClass]="card=='salary'?'check':''" (click)="Navigate('salary')">
       <mat-card-content>
         <mat-icon>currency_exchange</mat-icon>
         <mat-label>Quản lý phiếu lương</mat-label>
@@ -28,19 +28,19 @@
     <mat-card>
       <mat-card-content>
         <mat-icon>redeem</mat-icon>
-        <mat-label>Quản lý tiền thưởng</mat-label>
+        <mat-label>Quản lý tiền thưởng <span>(comming soon)</span></mat-label>
       </mat-card-content>
     </mat-card>
     <mat-card>
       <mat-card-content>
         <mat-icon>request_quote</mat-icon>
-        <mat-label>Quản lý tiền ứng lương</mat-label>
+        <mat-label>Quản lý tiền ứng lương <span>(comming soon)</span></mat-label>
       </mat-card-content>
     </mat-card>
     <mat-card>
       <mat-card-content>
         <mat-icon>task_alt</mat-icon>
-        <mat-label>Quản lý công việc</mat-label>
+        <mat-label>Quản lý công việc <span>(comming soon)</span></mat-label>
       </mat-card-content>
     </mat-card>
   </mat-drawer>
