@@ -53,6 +53,15 @@ export class UserDetailComponent implements OnInit {
   HDLDNumber: string;
   HDLDStartDate: Date;
   HDLDEndDate: Date;
+
+  Money: number;
+  FuelAllowance: number;
+  LunchAllowance: number;
+
+  listRoles: any[] = [];
+  roles: any;
+  preRoles: any;
+
   constructor(
     private router: Router, 
     private route: ActivatedRoute,
@@ -75,6 +84,8 @@ export class UserDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.getUser();
+    this.getSalary();
+    this.getListRoles();
     this.listenToLoading();
   }
 
@@ -190,6 +201,65 @@ export class UserDetailComponent implements OnInit {
     this.userService.updateUserInfo(data).subscribe(res => {
       if(res && res.status == 'Success'){
         this.openSnackBar(res.message)
+      }
+    })
+  }
+
+  saveSalary(){
+    const data = {
+      FromUserId: this.id,
+      Money: this.Money.toString(),
+      FuelAllowance: this.FuelAllowance.toString(),
+      LunchAllowance: this.LunchAllowance.toString()
+    }
+    this.userService.saveSalary(data).subscribe(res => {
+      if(res && res.status == 'Success'){
+        this.openSnackBar(res.message)
+      }
+    })
+  }
+
+  getSalary(){
+    this.userService.getSalary(this.id).subscribe(res => {
+      if(res){
+        this.Money = res.money;
+        this.FuelAllowance = res.fuelAllowance;
+        this.LunchAllowance = res.lunchAllowance;
+      }
+    })
+  }
+
+  getRolesOfUserr(){
+    this.userService.getRolesOfUser(this.id).subscribe(res => {
+      if(res && res.length > 0){
+        const t = this.listRoles.find(i => i.name == res[0]);
+        this.roles = t;
+        this.preRoles = t;
+      }
+    })
+  }
+
+  getListRoles(){
+    this.userService.getListRoles().subscribe(res => {
+      if(res && res.length > 0){
+        this.listRoles = res;
+        this.getRolesOfUserr();
+      }
+    })
+  }
+
+  chooseRoles(e: any){
+    if(e?.value){
+      this.roles = this.listRoles.find(i => i.id == e.value);
+    }
+  }
+
+  saveRoles(){
+    this.userService.updateRolesOfUser({
+      UserId: this.id, OldRoles: this.preRoles.name, NewRoles: this.roles.name
+    }).subscribe(res => {
+      if(res && res.status == "Success"){
+        this.openSnackBar(res.message);
       }
     })
   }

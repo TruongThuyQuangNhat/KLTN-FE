@@ -59,6 +59,26 @@ export class UserService {
   updateUserInfo(data: any){
     return this.http.put(env.apiUrl + 'user/update', data).pipe(map((res: any) => res));
   }
+
+  saveSalary(data: any){
+    return this.http.post(env.apiUrl + 'salary/create', data).pipe(map((res: any) => res));
+  }
+
+  getSalary(id: string){
+    return this.http.get(env.apiUrl + 'salary/get/' + id).pipe(map((res: any) => res));
+  }
+
+  getRolesOfUser(id: string){
+    return this.http.get(env.apiUrl + 'userroles/get/' + id).pipe(map((res: any) => res));
+  }
+
+  getListRoles(){
+    return this.http.get(env.apiUrl + 'userroles/getlist').pipe(map((res: any) => res));
+  }
+
+  updateRolesOfUser(data: any){
+    return this.http.put(env.apiUrl + 'userroles/update', data).pipe(map((res: any) => res));
+  }
 }
 
 class CreateUserModel {

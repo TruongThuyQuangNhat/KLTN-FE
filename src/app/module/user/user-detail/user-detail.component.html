@@ -33,6 +33,34 @@
 
 
     <mat-accordion>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Thông tin phúc lợi
+          </mat-panel-title>
+          <mat-panel-description>
+            Lương
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <p>Lương cố định</p>
+        <mat-form-field class="example-full-width w-500">
+          <mat-label>Lương cố định</mat-label>
+          <input matInput placeholder="Chưa có dữ liệu" [value]="Money" [(ngModel)]="Money" type="number">
+        </mat-form-field>
+        <p>Trợ cấp ăn trưa</p>
+        <mat-form-field appearance="fill" class="w-500">
+          <mat-label>Trợ cấp ăn trưa</mat-label>
+          <input matInput placeholder="Chưa có dữ liệu" [value]="LunchAllowance" [(ngModel)]="LunchAllowance" type="number">
+        </mat-form-field>
+        <p>Trợ cấp xăng đi làm</p>
+        <mat-form-field appearance="fill" class="w-500">
+          <mat-label>Trợ cấp xăng đi làm</mat-label>
+          <input matInput placeholder="Chưa có dữ liệu" [value]="FuelAllowance" [(ngModel)]="FuelAllowance" type="number">
+        </mat-form-field>
+        <br><button mat-raised-button (click)="saveSalary()" color="primary">Lưu</button>
+      </mat-expansion-panel>
+
       <mat-expansion-panel>
         <mat-expansion-panel-header>
           <mat-panel-title>
@@ -74,6 +102,28 @@
           <mat-datepicker #picker2></mat-datepicker>
         </mat-form-field>
         <br><button mat-raised-button (click)="saveInfo()" color="primary">Lưu</button>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Quyền
+          </mat-panel-title>
+          <mat-panel-description>
+            Roles
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <p>Quyền của người dùng</p>
+        <mat-form-field appearance="fill" class="m-t-20 w-200 m-l-15">
+          <mat-label>Roles</mat-label>
+          <mat-select [value]="roles?.id" (selectionChange)="chooseRoles($event)">
+            <mat-option *ngFor="let item of listRoles" [value]="item.id">
+              {{item.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        
+        <br><button mat-raised-button (click)="saveRoles()" color="primary">Lưu</button>
       </mat-expansion-panel>
 
       <mat-expansion-panel>
