@@ -1,0 +1,22 @@
+.content {
+    height: calc(100vh - 74px);
+    padding: 10px 15px 0px 15px;
+}
+
+.content2 {
+    height: calc(100vh - 78px);
+    padding: 10px 15px 0px 15px;
+}
+
+.example-button-row {
+    display: table-cell;
+    max-width: 600px;
+}
+
+.example-button-row .mat-mdc-button-base {
+    margin: 8px 8px 8px 0;
+}
+
+.tow-header {
+    display: flex;
+}

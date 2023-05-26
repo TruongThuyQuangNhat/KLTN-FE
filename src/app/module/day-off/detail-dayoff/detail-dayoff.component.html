@@ -1,0 +1,45 @@
+<div *ngIf="loading">
+    <mat-progress-bar
+      color="primary"
+      mode="indeterminate">
+    </mat-progress-bar>
+  </div>
+  
+  <div [class]="loading?'content2':'content'">
+    <mat-toolbar>
+        <button (click)="back()" mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+            <mat-icon>arrow_back</mat-icon>
+        </button>
+    </mat-toolbar>
+    <div>
+        <mat-card class="example-card">
+            <div class="tow-header">
+                <mat-card-header>
+                    <img mat-card-avatar [src]="data?.avatar?'https://localhost:5001/'+data?.avatar:
+                        'https://th.bing.com/th/id/R.136cc50d89f917ee8b820b39bbaa98d4?rik=LHOLLs3DfCbR9Q&pid=ImgRaw&r=0'">
+                    <mat-card-title>{{data?.name}}</mat-card-title>
+                    <mat-card-subtitle>Người đăng ký nghỉ</mat-card-subtitle>
+                  </mat-card-header>
+                  <mat-card-header>
+                      <img mat-card-avatar [src]="data?.avatar2?'https://localhost:5001/'+data?.avatar2:
+                          'https://th.bing.com/th/id/R.136cc50d89f917ee8b820b39bbaa98d4?rik=LHOLLs3DfCbR9Q&pid=ImgRaw&r=0'">
+                      <mat-card-title>{{data?.name2}}</mat-card-title>
+                      <mat-card-subtitle>Người duyệt đăng ký</mat-card-subtitle>
+                  </mat-card-header>
+            </div>
+            
+            <mat-card-content>
+              <p><b>Ngày nghỉ: </b>{{data?.dateOff | date: 'dd/MM/yyyy'}}</p>
+              <p><b>Lý do: </b>{{data?.note}}</p>
+              <p><b>Thời gian: </b>{{half}}</p>
+              <p><b>Trạng thái: </b>{{approval}}</p>
+              <p *ngIf="data?.sabbaticalDayOff"><b>Đã dùng phép</b> cho lần đăng ký này</p>
+              <p *ngIf="!data?.sabbaticalDayOff"><b>Không dùng phép</b> cho lần đăng ký này</p>
+            </mat-card-content>
+        </mat-card>
+        <div class="example-button-row" *ngIf="data?.approval == '1'">
+            <button mat-raised-button (click)="actionApproval('3')" color="primary">Duyệt</button>
+            <button mat-raised-button (click)="actionApproval('2')" color="accent">Hủy Duyệt</button>
+        </div>
+    </div>
+  </div>

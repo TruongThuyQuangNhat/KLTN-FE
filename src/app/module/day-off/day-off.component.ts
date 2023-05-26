@@ -62,54 +62,6 @@ export class DayOffComponent {
   pageEvent: PageEvent = new PageEvent();
   gridModel: GridModel = new GridModel();
   gridString: string;
-  dataDialogTemp: any[] = [
-    {
-      type: 'text',
-      title: 'Họ và tên:',
-      value: '',
-    },
-    {
-      type: 'number',
-      title: 'Tuổi:',
-      value: 0,
-    },
-    {
-      type: 'upload',
-      title: 'Avatar:',
-      value: '',
-    },
-    {
-      type: 'radio',
-      title: 'Gới tính:',
-      value: '0',
-      listRadio: [
-        {text: 'Nam', value: '0'},
-        {text: 'Nữ', value: '1'}
-      ]
-    },
-    {
-      type: 'select',
-      title: 'Chọn Phòng Ban:',
-      value: '0',
-      listSelect: [
-        {text: 'none', value: '0'},
-        {text: 'Phòng Nhân Sự', value: '11'},
-        {text: 'Phòng IT', value: '12'},
-        {text: 'Phòng Khách Hàng', value: '13'},
-        {text: 'Phòng R&D', value: '14'},
-      ]
-    },
-    {
-      type: 'date',
-      title: 'Ngày sinh:',
-      value: new Date(),
-    },
-    {
-      type: 'dateTime',
-      title: 'Chọn ngày và giờ:',
-      value: new Date(),
-    },
-  ];
 
   dataDialog: dialogModel[] = [
     {
@@ -356,128 +308,108 @@ export class DayOffComponent {
   handleActions(e: any){
     if(e){
       if(e.type == 'detail'){
-        this.router.navigate(['user/'+e.id, {gridModel: JSON.stringify(this.gridModel)}])
+        this.router.navigate(['dayoff/'+e.id, {gridModel: JSON.stringify(this.gridModel)}])
       } else if(e.type == 'edit'){
-        // this.userService.getUser(e.id).subscribe(res => {
-        //   console.log(res)
-        //   const dep = this.listDepartment.find(i => i.id == res.departmentId)
-        //   const po = this.listPosition.find(i => i.id == res.positionId)
-        //   if(res){
-        //     const dataDialogEdit: dialogModel[] = [
-        //       {
-        //         type: 'text',
-        //         title: 'Tên:',
-        //         field: 'FirstName',
-        //         subTitle: 'Tên, vd: Nhật',
-        //         required: true,
-        //         value: res.firstName,
-        //       },
-        //       {
-        //         type: 'text',
-        //         title: 'Họ:',
-        //         field: 'LastName',
-        //         subTitle: 'Họ, vd: Trương',
-        //         required: true,
-        //         value: res.lastName,
-        //       },
-        //       {
-        //         type: 'text',
-        //         title: 'Email:',
-        //         field: 'Email',
-        //         subTitle: 'Email, vd: ttqnhat@email.com',
-        //         required: true,
-        //         value: res.email,
-        //       },
-        //       {
-        //         type: 'upload',
-        //         title: 'Avatar:',
-        //         field: 'Avatar',
-        //         required: false,
-        //         value: res.avatar,
-        //       },
-        //       {
-        //         type: 'text',
-        //         title: 'Phone:',
-        //         field: 'PhoneNumber',
-        //         subTitle: 'vd: 098877665522',
-        //         required: false,
-        //         value: res.phoneNumber,
-        //       },
-        //       {
-        //         type: 'select',
-        //         title: 'Chọn Phòng Ban:',
-        //         value: dep?.name,
-        //         field: 'DepartmentId',
-        //         required: false,
-        //         listSelect: this.listDepartment
-        //       },
-        //       {
-        //         type: 'select',
-        //         title: 'Chọn Chức Vụ:',
-        //         value: po?.name,
-        //         field: 'PositionId',
-        //         required: false,
-        //         listSelect: this.listPosition
-        //       },
-        //     ];
-        //     console.log(dataDialogEdit)
-        //     const dialogRef = this.dialog.open(DialogAddComponent, {
-        //       data: dataDialogEdit,
-        //       width: '700px',
-        //     });
-        
-        //     dialogRef.afterClosed().subscribe(result => {
-        //       console.log(result);
-        //       if(result){
-        //         result.Id = res.id;
-        //         if(!result.PositionId){
-        //           result.PositionId = res.positionId
-        //         }
-        //         if(!result.DepartmentId){
-        //           result.DepartmentId = res.departmentId
-        //         }
-        //         if(result.Avatar){
-        //           const formImage = new FormData();
-        //           formImage.append('Avatar', result?.Avatar);
-        //           this.userService.uploadImage(formImage).subscribe(res => {
-        //             if(res && res.url){
-        //               result.Avatar = res.url;
-        //               this.userService.updateUser(result).subscribe(res => {
-        //                 this.getData();
-        //                 this.openSnackBar(res.message);
-        //               })
-        //             }
-        //           })
-        //         } else {
-        //           result.Avatar = res.avatar;
-        //           this.userService.updateUser(result).subscribe(res => {
-        //             this.getData();
-        //             this.openSnackBar(res.message);
-        //           })
-        //         }
-        //       }
-        //     });
-        //   }
-        // })
+        this.dayOffService.getOneDayOff(e.id).subscribe(res => {
+          console.log(res)
+          if(res){
+            if(res.approval != '1'){
+              this.openSnackBar('Ngày nghỉ ở trạng thái không được chỉnh sửa!')
+            } else {
+              var sab = this.sabbatical;
+              if(res.halfDate == "1" || res.halfDate == "2"){
+                sab = sab - 0.5;
+              } else if(res.halfDate == "3"){
+                sab = sab - 1;
+              }
+              
+              const dataDialogEdit: dialogModel[] = [
+                {
+                  type: 'date',
+                  title: 'Ngày nghỉ:',
+                  field: 'DateOff',
+                  subTitle: 'vd: 30/06/2023',
+                  required: true,
+                  value: new Date(res.dateOff),
+                },
+                {
+                  type: 'select',
+                  title: 'Chọn khoảng thời gian:',
+                  value: res.halfDate,
+                  field: 'HalfDate',
+                  required: false,
+                  listSelect: [
+                    {
+                      id: "1",
+                      name: "Buổi sáng",
+                    },
+                    {
+                      id: "2",
+                      name: "Buổi chiều",
+                    },
+                    {
+                      id: "3",
+                      name: "Cả ngày",
+                    }
+                  ]
+                },
+                {
+                  type: 'text',
+                  title: 'Lý do:',
+                  field: 'Note',
+                  subTitle: 'Họ, vd: Trương',
+                  required: true,
+                  value: res.note,
+                },
+                {
+                  type: 'toggle',
+                  title: "Số phép trong 1 năm là 12. Số phép còn lại của bạn là: " + sab,
+                  value: res?.sabbaticalDayOff,
+                  field: 'SabbaticalDayOff',
+                  required: false,
+                },
+              ];
+              const dialogRef = this.dialog.open(DialogAddComponent, {
+                data: dataDialogEdit,
+                width: '700px',
+              });
+          
+              dialogRef.afterClosed().subscribe(result => {
+                if(result){
+                  this.dayOffService.updateDateOff({
+                    Id: res.id, DateOff: new Date(result.DateOff), HalfDate: result.HalfDate, Note: result.Note, SabbaticalDayOff: result.SabbaticalDayOff
+                  }).subscribe(res => {
+                    if(res && res.status == "Success"){
+                      this.openSnackBar(res.message);
+                    }
+                    this.getData()
+                  })
+                }
+              });
+            }
+          }
+        })
       } else if(e.type == 'delete'){
-        // const dialogRef = this.dialog.open(DialogMessageComponent, {
-        //   data: {
-        //     title: 'Xóa User',
-        //     content: 'Bạn có muốn xóa user: ' + e.item.lastName + ' ' + e.item.firstName,
-        //   },
-        //   width: '500px',
-        // });
+        console.log(e.item)
+        var date = new Date(e.item.dateOff);
+        const dialogRef = this.dialog.open(DialogMessageComponent, {
+          data: {
+            title: 'Xóa User',
+            content: 'Bạn có muốn xóa ngày nghỉ '+date.toLocaleDateString('vn-VI')
+          },
+          width: '500px',
+        });
     
-        // dialogRef.afterClosed().subscribe(result => {
-        //   if(result == 'success'){
-        //     this.userService.deleteUser(e.item.id).subscribe(res => {
-        //       if(res){
-        //         this.getData();
-        //         this.openSnackBar(res.message)
-        //       }
-        //     })
-        //   }
-        // })
+        dialogRef.afterClosed().subscribe(result => {
+          if(result == 'success'){
+            this.dayOffService.delete(e.item.id).subscribe(res => {
+              if(res){
+                this.getData();
+                this.openSnackBar(res.message)
+              }
+            })
+          }
+        })
       }
     }
   }

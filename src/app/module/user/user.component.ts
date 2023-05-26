@@ -68,54 +68,6 @@ export class UserComponent implements OnInit {
   pageEvent: PageEvent = new PageEvent();
   gridModel: GridModel = new GridModel();
   gridString: string;
-  dataDialogTemp: any[] = [
-    {
-      type: 'text',
-      title: 'Họ và tên:',
-      value: '',
-    },
-    {
-      type: 'number',
-      title: 'Tuổi:',
-      value: 0,
-    },
-    {
-      type: 'upload',
-      title: 'Avatar:',
-      value: '',
-    },
-    {
-      type: 'radio',
-      title: 'Gới tính:',
-      value: '0',
-      listRadio: [
-        {text: 'Nam', value: '0'},
-        {text: 'Nữ', value: '1'}
-      ]
-    },
-    {
-      type: 'select',
-      title: 'Chọn Phòng Ban:',
-      value: '0',
-      listSelect: [
-        {text: 'none', value: '0'},
-        {text: 'Phòng Nhân Sự', value: '11'},
-        {text: 'Phòng IT', value: '12'},
-        {text: 'Phòng Khách Hàng', value: '13'},
-        {text: 'Phòng R&D', value: '14'},
-      ]
-    },
-    {
-      type: 'date',
-      title: 'Ngày sinh:',
-      value: new Date(),
-    },
-    {
-      type: 'dateTime',
-      title: 'Chọn ngày và giờ:',
-      value: new Date(),
-    },
-  ];
 
   dataDialog: dialogModel[] = [
     {
@@ -482,7 +434,7 @@ export class UserComponent implements OnInit {
       if(e.type == 'detail'){
         this.router.navigate(['user/'+e.id, {gridModel: JSON.stringify(this.gridModel)}])
       } else if(e.type == 'edit'){
-        this.userService.getUser(e.id).subscribe(res => {
+        this.userService.getUser(e?.id).subscribe(res => {
           console.log(res)
           const dep = this.listDepartment.find(i => i.id == res.departmentId)
           const po = this.listPosition.find(i => i.id == res.positionId)
@@ -530,7 +482,7 @@ export class UserComponent implements OnInit {
               {
                 type: 'select',
                 title: 'Chọn Phòng Ban:',
-                value: dep?.name,
+                value: res.departmentId,
                 field: 'DepartmentId',
                 required: false,
                 listSelect: this.listDepartment
@@ -538,7 +490,7 @@ export class UserComponent implements OnInit {
               {
                 type: 'select',
                 title: 'Chọn Chức Vụ:',
-                value: po?.name,
+                value: res.positionId,
                 field: 'PositionId',
                 required: false,
                 listSelect: this.listPosition

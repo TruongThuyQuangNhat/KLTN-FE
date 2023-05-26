@@ -22,4 +22,20 @@ export class DayOffService {
   getSabbatical(){
     return this.http.get(env.apiUrl + 'dayoff/getSabbatical').pipe(map((res: any) => res));
   }
+
+  getOneDayOff(id: string){
+    return this.http.get(env.apiUrl + 'dayoff/get/'+id).pipe(map((res: any) => res));
+  }
+
+  actionApproval(data: any){
+    return this.http.put(env.apiUrl + 'dayoff/approval', data).pipe(map((res: any) => res));
+  }
+
+  updateDateOff(data: any){
+    return this.http.put(env.apiUrl + 'dayoff/update', data).pipe(map((res: any) => res));
+  }
+
+  delete(id: string){
+    return this.http.delete(env.apiUrl + 'dayoff/delete/'+ id).pipe(map((res: any) => res));
+  }
 }

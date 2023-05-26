@@ -5,6 +5,7 @@ import { PageNotFoundComponent } from "./module/page-not-found/page-not-found.co
 import { UserComponent } from "./module/user/user.component";
 import { UserDetailComponent } from "./module/user/user-detail/user-detail.component";
 import { DayOffComponent } from "./module/day-off/day-off.component";
+import { DetailDayoffComponent } from "./module/day-off/detail-dayoff/detail-dayoff.component";
 
 export const routes: Routes = [
   {
@@ -18,6 +19,10 @@ export const routes: Routes = [
   {
     path: 'dayoff',
     component: DayOffComponent,
+  },
+  {
+    path: 'dayoff/:id',
+    component: DetailDayoffComponent,
   },
   {
     path: 'login',
