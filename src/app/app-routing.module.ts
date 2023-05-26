@@ -8,8 +8,14 @@ import { DayOffComponent } from "./module/day-off/day-off.component";
 import { DetailDayoffComponent } from "./module/day-off/detail-dayoff/detail-dayoff.component";
 import { SalaryComponent } from "./module/salary/salary.component";
 import { HistorySalaryComponent } from "./module/salary/history-salary/history-salary.component";
+import { ToolbarBasicExample } from "./toolbar-basic-example";
+import { HomeComponent } from "./module/home/home.component";
 
 export const routes: Routes = [
+  {
+    path: 'home',
+    component: HomeComponent,
+  },
   {
     path: 'user',
     component: UserComponent,

@@ -1,0 +1,20 @@
+.content {
+    height: calc(100vh - 74px);
+    padding: 10px 15px 0px 15px;
+}
+
+.content2 {
+    height: calc(100vh - 78px);
+    padding: 10px 15px 0px 15px;
+}
+
+.example-card {
+    width: 300px;
+    margin-bottom: 8px;
+}
+
+.parent {
+    margin-top: 100px;
+    display: flex;
+    justify-content: space-around;
+}

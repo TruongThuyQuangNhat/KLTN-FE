@@ -1,8 +1,15 @@
 <mat-toolbar class="header" color="primary">
-  <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon" (click)="drawer.toggle()">
-    <mat-icon>menu</mat-icon>
-  </button>
-  <span>Doanh Nghiệp Số</span>
+  <div>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon" (click)="drawer.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span (click)="home()">Doanh Nghiệp Số</span>
+  </div>
+  <div>
+    <img *ngIf="user?.avatar" class="avatar" mat-card-avatar [src]="user?.avatar?'https://localhost:5001/'+user?.avatar:
+          'https://th.bing.com/th/id/R.136cc50d89f917ee8b820b39bbaa98d4?rik=LHOLLs3DfCbR9Q&pid=ImgRaw&r=0'">
+      <span *ngIf="user?.lastName" class="name">{{user?.lastName + ' ' + user?.firstName}}</span>
+  </div>
 </mat-toolbar>
 
 <mat-drawer-container class="admin-container" autosize>
@@ -41,6 +48,12 @@
       <mat-card-content>
         <mat-icon>task_alt</mat-icon>
         <mat-label>Quản lý công việc <span>(comming soon)</span></mat-label>
+      </mat-card-content>
+    </mat-card>
+    <mat-card (click)="Navigate('login')">
+      <mat-card-content>
+        <mat-icon>logout</mat-icon>
+        <mat-label>Đăng xuất</mat-label>
       </mat-card-content>
     </mat-card>
   </mat-drawer>

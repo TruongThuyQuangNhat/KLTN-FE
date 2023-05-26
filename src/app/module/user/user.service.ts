@@ -79,6 +79,10 @@ export class UserService {
   updateRolesOfUser(data: any){
     return this.http.put(env.apiUrl + 'userroles/update', data).pipe(map((res: any) => res));
   }
+
+  getCurrentUser(){
+    return this.http.get(env.apiUrl + 'user/getcurrent').pipe(map((res: any) => res));
+  }
 }
 
 class CreateUserModel {

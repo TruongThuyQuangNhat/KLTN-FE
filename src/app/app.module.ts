@@ -23,11 +23,12 @@ import { DayOffComponent } from './module/day-off/day-off.component';
 import { DetailDayoffComponent } from './module/day-off/detail-dayoff/detail-dayoff.component';
 import { SalaryComponent } from './module/salary/salary.component';
 import { HistorySalaryComponent } from './module/salary/history-salary/history-salary.component';
+import { HomeComponent } from './module/home/home.component';
 
 @NgModule({
   declarations: [
     ToolbarBasicExample, 
-    UserComponent, PageNotFoundComponent, LoginComponent, TableComponent, DialogFilterComponent, DialogAddComponent, UserDetailComponent, DialogMessageComponent, DayOffComponent, DetailDayoffComponent, SalaryComponent, HistorySalaryComponent
+    UserComponent, PageNotFoundComponent, LoginComponent, TableComponent, DialogFilterComponent, DialogAddComponent, UserDetailComponent, DialogMessageComponent, DayOffComponent, DetailDayoffComponent, SalaryComponent, HistorySalaryComponent, HomeComponent
   ],
   imports: [
     BrowserAnimationsModule,

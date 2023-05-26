@@ -1,0 +1,44 @@
+<div *ngIf="loading">
+    <mat-progress-bar
+      color="primary"
+      mode="indeterminate">
+    </mat-progress-bar>
+  </div>
+  
+  <div [class]="loading?'content2':'content'">
+    <div class="parent">
+        <div (click)="navigate('user')">
+            <mat-card class="example-card">
+                <mat-card-header>
+                  <mat-card-title-group>
+                    <mat-card-title>Quản lý nhân viên</mat-card-title>
+                    <mat-card-subtitle>Quản lý thông tin cá nhân của nhân viên</mat-card-subtitle>
+                    <mat-icon>account_circle</mat-icon>
+                  </mat-card-title-group>
+                </mat-card-header>
+            </mat-card>
+        </div>
+        <div (click)="navigate('dayoff')">
+            <mat-card class="example-card">
+                <mat-card-header>
+                  <mat-card-title-group>
+                    <mat-card-title>Quản lý ngày nghỉ</mat-card-title>
+                    <mat-card-subtitle>Quản lý, phê duyệt ngày nghỉ của nhân viêen</mat-card-subtitle>
+                    <mat-icon>free_cancellation</mat-icon>
+                  </mat-card-title-group>
+                </mat-card-header>
+            </mat-card>
+        </div>
+        <div (click)="navigate('salary')">
+            <mat-card class="example-card">
+                <mat-card-header>
+                  <mat-card-title-group>
+                    <mat-card-title>Quản lý phiếu lương</mat-card-title>
+                    <mat-card-subtitle>Quản lý, xuất bảng lương của nhân viên</mat-card-subtitle>
+                    <mat-icon>currency_exchange</mat-icon>
+                  </mat-card-title-group>
+                </mat-card-header>
+            </mat-card>
+        </div>
+    </div>
+  </div>

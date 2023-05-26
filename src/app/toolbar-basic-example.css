@@ -29,3 +29,20 @@ mat-card-content mat-icon {
 mat-label span {
   color: rgb(193, 193, 193);
 }
+
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.avatar {
+  position: absolute;
+  top: 13px;
+  right: 270px;
+}
+
+.name {
+  position: absolute;
+  top: 16px;
+  right: 30px;
+}

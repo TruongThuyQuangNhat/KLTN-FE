@@ -1,5 +1,7 @@
-import {Component} from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import {Component, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
+import { UserService } from './module/user/user.service';
 
 /**
  * @title Basic toolbar
@@ -9,14 +11,30 @@ import { Router } from '@angular/router';
   templateUrl: 'toolbar-basic-example.html',
   styleUrls: ['toolbar-basic-example.css'],
 })
-export class ToolbarBasicExample {
-  constructor(private router: Router){}
+export class ToolbarBasicExample implements OnInit {
+  user: any;
+  constructor(private router: Router, private service: UserService){}
+  ngOnInit(): void {
+    this.service.getCurrentUser().subscribe(res => {
+      if(res){
+        console.log("===",res)
+        this.user = res
+      }
+    })
+  }
 
   card: string = "user";
 
   Navigate(url: any){
     this.card = url;
     this.router.navigate([url])
+    if(url == "login"){
+      this.user = null;
+      localStorage.removeItem('token');
+    }
+  }
+  home(){
+    this.router.navigate(['home'])
   }
 }
 

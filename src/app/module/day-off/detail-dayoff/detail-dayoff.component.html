@@ -37,7 +37,7 @@
               <p *ngIf="!data?.sabbaticalDayOff"><b>Không dùng phép</b> cho lần đăng ký này</p>
             </mat-card-content>
         </mat-card>
-        <div class="example-button-row" *ngIf="data?.approval == '1'">
+        <div class="example-button-row" *ngIf="data?.approval == '1' && roles != 'Employee'">
             <button mat-raised-button (click)="actionApproval('3')" color="primary">Duyệt</button>
             <button mat-raised-button (click)="actionApproval('2')" color="accent">Hủy Duyệt</button>
         </div>

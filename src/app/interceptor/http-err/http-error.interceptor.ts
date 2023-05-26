@@ -37,7 +37,9 @@ return next.handle(request)
         for(let key in error.error.errors){
           errMsg = error.error.errors[key]
          }
-         this.openSnackBar(errMsg[0])
+         if(errMsg[0]){
+           this.openSnackBar(errMsg[0])
+         }
        }
        console.log(error)
        return throwError(() => new Error(error.error));

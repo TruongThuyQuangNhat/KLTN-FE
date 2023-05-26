@@ -144,6 +144,7 @@ export class DayOffComponent {
     private _snackBar: MatSnackBar,
     private router: Router,
     private route: ActivatedRoute,
+    private userService: UserService,
   ){
     this.route.params.subscribe(res => {
       console.log(res)
@@ -156,17 +157,20 @@ export class DayOffComponent {
   }
 
   ngOnInit(): void {
-    if(this.gridString){
-      this.gridModel = JSON.parse(this.gridString);
-      this.gridModel.listFilter.forEach(i => {})
-    } else {
-      this.gridModel.page = 0;
-      this.gridModel.pageLoading = true;
-      this.gridModel.pageSize = 3;
-    }
-    this.getData();
-    this.listenToLoading();
-    this.getSabbatical();
+    this.userService.getCurrentUser().subscribe(res => {
+      if(this.gridString){
+        this.gridModel = JSON.parse(this.gridString);
+        this.gridModel.listFilter.forEach(i => {})
+      } else {
+        this.gridModel.page = 0;
+        this.gridModel.pageLoading = true;
+        this.gridModel.pageSize = 3;
+      }
+      this.getData();
+      this.listenToLoading();
+      this.getSabbatical();
+    }, err => {this.router.navigate(['login'])})
+    
   }
 
   getData(){
@@ -238,7 +242,7 @@ export class DayOffComponent {
 
   getSabbatical(){
     this.dayOffService.getSabbatical().subscribe(res => {
-      this.sabbatical = 12 - res?res:0;
+      this.sabbatical = 12 - (res?res:0);
       this.dataDialog.forEach(i => {
         if(i.field == "SabbaticalDayOff"){
           i.title = "Số phép trong 1 năm là 12. Số phép còn lại của bạn là: " + this.sabbatical;

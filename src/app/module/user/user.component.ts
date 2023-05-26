@@ -247,25 +247,28 @@ export class UserComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if(this.gridString){
-      this.gridModel = JSON.parse(this.gridString);
-      this.gridModel.listFilter.forEach(i => {
-        if(i.filterColumns == 'Position'){
-          this.idPosition = i.filterData
-        }
-        if(i.filterColumns == 'Department'){
-          this.idDepartment = i.filterData
-        }
-      })
-    } else {
-      this.gridModel.page = 0;
-      this.gridModel.pageLoading = true;
-      this.gridModel.pageSize = 3;
-    }
-    this.getData();
-    this.listenToLoading();
-    this.getListDepartment();
-    this.getListPosition();
+    this.userService.getCurrentUser().subscribe(res => {
+      if(this.gridString){
+        this.gridModel = JSON.parse(this.gridString);
+        this.gridModel.listFilter.forEach(i => {
+          if(i.filterColumns == 'Position'){
+            this.idPosition = i.filterData
+          }
+          if(i.filterColumns == 'Department'){
+            this.idDepartment = i.filterData
+          }
+        })
+      } else {
+        this.gridModel.page = 0;
+        this.gridModel.pageLoading = true;
+        this.gridModel.pageSize = 3;
+      }
+      this.getData();
+      this.listenToLoading();
+      this.getListDepartment();
+      this.getListPosition();
+    }, err => {this.router.navigate(['login'])})
+    
   }
 
   getData(){

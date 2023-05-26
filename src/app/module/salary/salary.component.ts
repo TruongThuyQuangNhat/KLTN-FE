@@ -5,11 +5,10 @@ import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition
 import { ActivatedRoute, Router } from '@angular/router';
 import { GridModel } from 'src/app/common/model/gridModel';
 import { LoadingService } from 'src/app/interceptor/loading/loading.service';
-import { DayOffService } from '../day-off.service';
 import { delay } from 'rxjs';
-import { DialogMessageComponent } from 'src/app/common/dialog-message/dialog-message.component';
 import { ResSalary } from 'src/app/common/model/listSalary.Model';
 import { SalaryService } from './salary.service';
+import { UserService } from '../user/user.service';
 
 @Component({
   selector: 'app-salary',
@@ -64,6 +63,7 @@ export class SalaryComponent {
     private _snackBar: MatSnackBar,
     private router: Router,
     private route: ActivatedRoute,
+    private userService: UserService,
   ){
     this.route.params.subscribe(res => {
       console.log(res)
@@ -76,16 +76,19 @@ export class SalaryComponent {
   }
 
   ngOnInit(): void {
-    if(this.gridString){
-      this.gridModel = JSON.parse(this.gridString);
-      this.gridModel.listFilter.forEach(i => {})
-    } else {
-      this.gridModel.page = 0;
-      this.gridModel.pageLoading = true;
-      this.gridModel.pageSize = 3;
-    }
-    this.getData();
-    this.listenToLoading();
+    this.userService.getCurrentUser().subscribe(res => {
+      if(this.gridString){
+        this.gridModel = JSON.parse(this.gridString);
+        this.gridModel.listFilter.forEach(i => {})
+      } else {
+        this.gridModel.page = 0;
+        this.gridModel.pageLoading = true;
+        this.gridModel.pageSize = 3;
+      }
+      this.getData();
+      this.listenToLoading();
+    }, err => {this.router.navigate(['login'])})
+    
   }
 
   getData(){
