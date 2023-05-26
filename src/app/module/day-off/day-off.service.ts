@@ -14,4 +14,12 @@ export class DayOffService {
   getListDayOff(gridModel: GridModel){
     return this.http.post(env.apiUrl + 'dayoff/getlist', gridModel).pipe(map((res: any) => res));
   }
+
+  addDateOff(data: any){
+    return this.http.post(env.apiUrl + 'dayoff/create', data).pipe(map((res: any) => res));
+  }
+
+  getSabbatical(){
+    return this.http.get(env.apiUrl + 'dayoff/getSabbatical').pipe(map((res: any) => res));
+  }
 }

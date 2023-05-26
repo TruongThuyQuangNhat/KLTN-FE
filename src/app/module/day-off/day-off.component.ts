@@ -113,154 +113,50 @@ export class DayOffComponent {
 
   dataDialog: dialogModel[] = [
     {
-      type: 'text',
-      title: 'User Name:',
-      field: 'Username',
-      subTitle: 'username, vd: ttqnhat',
-      required: true,
-      value: '',
-    },
-    {
-      type: 'text',
-      title: 'Tên:',
-      field: 'FirstName',
-      subTitle: 'Tên, vd: Nhật',
-      required: true,
-      value: '',
-    },
-    {
-      type: 'text',
-      title: 'Họ:',
-      field: 'LastName',
-      subTitle: 'Họ, vd: Trương',
-      required: true,
-      value: '',
-    },
-    {
-      type: 'text',
-      title: 'Email:',
-      field: 'Email',
-      subTitle: 'Email, vd: ttqnhat@email.com',
-      required: true,
-      value: '',
-    },
-    {
-      type: 'upload',
-      title: 'Avatar:',
-      field: 'Avatar',
-      required: false,
-      value: '',
-    },
-    {
-      type: 'text',
-      title: 'Phone:',
-      field: 'PhoneNumber',
-      subTitle: 'vd: 098877665522',
-      required: false,
-      value: '',
-    },
-    {
-      type: 'password',
-      title: 'Mật Khẩu:',
-      field: 'Password',
-      required: true,
-      value: '',
-    },
-    {
-      type: 'password',
-      title: 'Lặp Lại Mật Khẩu:',
-      field: 'RepeatPassword',
+      type: 'date',
+      title: 'Ngày nghỉ:',
+      field: 'DateOff',
+      subTitle: 'vd: 01/06/2023',
       required: true,
       value: '',
     },
     {
       type: 'select',
-      title: 'Chọn Phòng Ban:',
+      title: 'Thời gian nghỉ:',
       value: '',
-      field: 'DepartmentId',
+      field: 'HalfDate',
       required: true,
-      listSelect: []
-    },
-    {
-      type: 'select',
-      title: 'Chọn Chức Vụ:',
-      value: '',
-      field: 'PositionId',
-      required: true,
-      listSelect: []
-    },
-  ];
-
-  dataFilterDialog: any[] = [
-    {
-      title: "Phòng Ban",
-      field: 'Department',
-      description: 'Chọn User có Phòng Ban',
-      value: '',
-      textOfValue: '',
-      listSelect: [],
-      operator: '',
-      textOperator: '',
-      listOperator: [
-        {
-          text: 'Bằng Với',
-          value: '='
-        },
-        {
-          text: 'Khác Với',
-          value: '!='
-        },
-      ]
-    },
-    {
-      title: "Chức Vụ",
-      field: 'Position',
-      description: 'Chọn User có Chức Vụ',
-      value: '',
-      textOfValue: '',
-      listSelect: [],
-      operator: '',
-      textOperator: '',
-      listOperator: [
-        {
-          text: 'Bằng Với',
-          value: '='
-        },
-        {
-          text: 'Khác Với',
-          value: '!='
-        },
-      ]
-    },
-    {
-      title: "Sắp xếp theo Họ Tên",
-      field: 'OrderBy',
-      description: 'User được sắp xếp theo',
-      value: '',
-      textOfValue: '',
       listSelect: [
         {
-          id: 'FirstName',
-          name: 'Tên'
+          id: "1",
+          name: "Buổi sáng",
         },
         {
-          id: 'LastName',
-          name: 'Họ'
-        },
-      ],
-      operator: '',
-      textOperator: '',
-      listOperator: [
-        {
-          text: 'A-Z',
-          value: 'asc'
+          id: "2",
+          name: "Buổi chiều",
         },
         {
-          text: 'Z-A',
-          value: 'desc'
-        },
+          id: "3",
+          name: "Cả ngày",
+        }
       ]
-    }
+    },
+    {
+      type: 'text',
+      title: 'Lý do:',
+      field: 'Note',
+      subTitle: 'vd: khám bệnh',
+      required: true,
+      value: '',
+    },
+    {
+      type: 'toggle',
+      title: '',
+      field: 'SabbaticalDayOff',
+      subTitle: 'Sử dụng phép',
+      required: false,
+      value: true,
+    },
   ];
 
   approval: string;
@@ -285,6 +181,7 @@ export class DayOffComponent {
   dataFilterStartDate: FilterModel = new FilterModel();
   dataFilterEndDate: FilterModel = new FilterModel();
   dataFilterApproval: FilterModel = new FilterModel();
+  sabbatical: number = 0;
 
   constructor(
     private dayOffService: DayOffService,
@@ -315,6 +212,7 @@ export class DayOffComponent {
     }
     this.getData();
     this.listenToLoading();
+    this.getSabbatical();
   }
 
   getData(){
@@ -384,6 +282,16 @@ export class DayOffComponent {
     }
   }
 
+  getSabbatical(){
+    this.dayOffService.getSabbatical().subscribe(res => {
+      this.sabbatical = 12 - res?res:0;
+      this.dataDialog.forEach(i => {
+        if(i.field == "SabbaticalDayOff"){
+          i.title = "Số phép trong 1 năm là 12. Số phép còn lại của bạn là: " + this.sabbatical;
+        }
+      })
+    })
+  }
 
   handlePaginator(value: { pageIndex: number; pageSize: number }){
     console.log(value)
@@ -406,59 +314,6 @@ export class DayOffComponent {
     this.getData();
   }
 
-  openDialogFilter(): void {
-    // if(this.idDepartment || this.idPosition){
-    //   this.dataFilterDialog.forEach(i => {
-    //     if(i.field !== 'OrderBy'){
-    //       if(i.field == 'Position'){
-    //         i.value = this.idPosition?this.idPosition:'';
-    //         i.textOfValue = this.idPosition?this.textPosition:'';
-    //         i.operator = this.idPosition?'=':'';
-    //         i.textOperator = this.idPosition?'Bằng Với':'';
-    //       } else if(i.field == 'Department'){
-    //         i.value = this.idDepartment?this.idDepartment:'';
-    //         i.textOfValue = this.idDepartment?this.textDepartment:'';
-    //         i.operator = this.idDepartment?'=':'';
-    //         i.textOperator = this.idDepartment?'Bằng Với':'';
-    //       }
-    //     }
-    //   })
-    // }
-    // const dialogRef = this.dialog.open(DialogFilterComponent, {
-    //   data: this.dataFilterDialog,
-    //   width: '700px',
-    // });
-
-    // dialogRef.afterClosed().subscribe(result => {
-    //   if(result.length != 0){
-    //     this.gridModel.listFilter = [];
-    //     this.idDepartment = '';
-    //     this.idPosition = '';
-    //     result.forEach((i: any) => {
-    //       if(i.filterColumns !== 'OrderBy'){
-    //         if(i.filterColumns && i.filterDirections && i.filterData){
-    //           this.gridModel.listFilter.push(i);
-    //           if(i.filterDirections == '='){
-    //             if(i.filterColumns == "Department"){
-    //               this.idDepartment = i.filterData
-    //             } else if(i.filterColumns == "Position"){
-    //               this.idPosition = i.filterData
-    //             }
-    //           }
-    //         }
-    //       } else {
-    //         if(i.filterColumns && i.filterDirections && i.filterData){
-    //           this.gridModel.srtColumns = i.filterData,
-    //           this.gridModel.srtDirections = i.filterDirections
-    //         }
-    //       }
-    //     });
-    //     this.gridModel.page = 0;
-    //     this.getData()
-    //   }
-    // });
-  }
-
   openAdd(){
     const dialogRef = this.dialog.open(DialogAddComponent, {
       data: this.dataDialog,
@@ -466,7 +321,19 @@ export class DayOffComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result)
+      if(result){
+        const DateOff = new Date(result.DateOff);
+        const data = {
+          DateOff, HalfDate: result.HalfDate, Note: result.Note, SabbaticalDayOff: result.SabbaticalDayOff
+        }
+        this.dayOffService.addDateOff(data).subscribe(res => {
+          this.getSabbatical();
+          if(res && res.status == "Success"){
+            this.openSnackBar(res.message);
+            this.getData();
+          }
+        })
+      }
     });
   }
 
@@ -625,5 +492,11 @@ export class DayOffComponent {
       this.gridModel.searchText = '';
       this.getData();
     }
+  }
+
+  getNumberOfSabbatical(){
+    const gridModel = new GridModel();
+    gridModel.pageLoading = false;
+    gridModel.listFilter
   }
 }

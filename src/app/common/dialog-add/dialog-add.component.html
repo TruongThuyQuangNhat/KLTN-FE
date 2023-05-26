@@ -95,6 +95,10 @@
                   style="height: 75px"
                 />
             </div>
+            <div *ngIf="item.type === 'toggle'">
+              <mat-slide-toggle [checked]="true" [formControlName]="item.field">{{item.subTitle}}</mat-slide-toggle>
+              
+            </div>
         </div>
         
         <div mat-dialog-actions class="footer">

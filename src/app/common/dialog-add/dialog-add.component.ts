@@ -22,9 +22,9 @@ export class DialogAddComponent implements OnInit {
     let data: any = {};
     this.data.forEach(i => {
       if(i.required){
-        data[i.field] = new FormControl("", Validators.required);
+        data[i.field] = new FormControl(i.value, Validators.required);
       } else {
-        data[i.field] = new FormControl();
+        data[i.field] = new FormControl(i.value);
       }
     })
     data.fileSource = new FormControl();
